@@ -302,9 +302,9 @@ MonoBehaviour:
   enemyType: 0
   maxDistance: 2
   attackRange: 2
-  attackDamage: 200
-  attackInterval: 1
-  moveAttackSpeed: 1
+  attackDamage: 30
+  attackInterval: 2
+  moveAttackSpeed: 2
   moveWaitTime: 0.4
   knockbackForce: 2
   knockbackDuration: 0.2

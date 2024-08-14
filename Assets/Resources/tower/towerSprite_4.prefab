@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9052112046883021409}
   - component: {fileID: 859929308447350475}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: towerSprite_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2605409956122334275}
   - component: {fileID: 4746522482252464907}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: towerSprite_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

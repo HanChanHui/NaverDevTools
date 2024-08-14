@@ -27,14 +27,13 @@ public class Block : LivingEntity
         }
     }
 
-    public override void TakeDamage(float damage, int obstacleDamage = 1, bool isCritical = false, bool showLabel = false)
+    public override void TakeDamage(float damage, int obstacleDamage = 1, bool showLabel = false)
     {
-        base.TakeDamage(damage, obstacleDamage, isCritical, showLabel);
+        base.TakeDamage(damage, obstacleDamage, showLabel);
         healthBar.Show();
         healthBar.UpdateHealth(health, maxHealth);
         int count = GameManager.Instance.EnemyMaxDeathCount + 1;
         GameManager.Instance.EnemyMaxDeathCount = count;
-        Debug.Log(GameManager.Instance.EnemyMaxDeathCount);
         if (health <= 0)
         {
             DestroyTarget();

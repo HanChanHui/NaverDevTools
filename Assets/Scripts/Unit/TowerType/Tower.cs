@@ -10,6 +10,7 @@ public class Tower : LivingEntity
     protected List<GridPosition> gridPositionList = new List<GridPosition>();
     protected List<BaseEnemy> enemiesInRange = new List<BaseEnemy>();
 
+    [SerializeField] protected float defence;
     [SerializeField] protected int maxDistance;
     [SerializeField] protected float attackDamage;
     [SerializeField] protected float attackSpeed;
@@ -26,6 +27,15 @@ public class Tower : LivingEntity
         {
             originalColor = sprite.color;
         }
+    }
+
+    public void Init(int maxDistance, float attackDamage, float attackSpeed, int health, float defence)
+    {
+        this.maxDistance = maxDistance;
+        this.attackDamage = attackDamage;
+        this.attackSpeed = attackSpeed;
+        this.health = health;
+        this.defence = defence;
     }
 
     protected virtual void Start()
@@ -47,34 +57,10 @@ public class Tower : LivingEntity
             }
         }
 
-        //LevelGrid.Instance.OnEnemyEnteredGridPosition += OnEnemyEnteredGridPosition;
-        //LevelGrid.Instance.OnEnemyExitedGridPosition += OnEnemyExitedGridPosition;
         BaseEnemy.OnEnemyDestroyed += OnEnemyDestroyed;
 
         //SetHealth(100);
         StartCoroutine(CoCheckDistance());
-    }
-
-    protected void OnEnemyEnteredGridPosition(BaseEnemy enemy, GridPosition gridPosition)
-    {
-        if (IsWithinRange(gridPosition))
-        {
-            if (!enemiesInRange.Contains(enemy))
-            {
-                enemiesInRange.Add(enemy);
-            }
-        }
-    }
-
-    protected void OnEnemyExitedGridPosition(BaseEnemy enemy, GridPosition gridPosition)
-    {
-        if(!IsWithinRange(gridPosition))
-        {
-            if (enemiesInRange.Contains(enemy)) 
-            {
-                enemiesInRange.Remove(enemy);
-            }
-        }
     }
 
     protected void OnEnemyDestroyed(BaseEnemy enemy)
@@ -106,9 +92,9 @@ public class Tower : LivingEntity
         yield return null;
     }
 
-    public override void TakeDamage(float damage, int obstacleDamage = 1, bool isCritical = false, bool showLabel = false)
+    public override void TakeDamage(float damage, int obstacleDamage = 1, bool showLabel = false)
     {
-        base.TakeDamage(damage, obstacleDamage, isCritical, showLabel);
+        base.TakeDamage(damage, obstacleDamage, showLabel);
 
         StartCoroutine(FlashRed());
 
@@ -135,8 +121,6 @@ public class Tower : LivingEntity
 
     protected virtual void OnDestroy()
     {
-        LevelGrid.Instance.OnEnemyEnteredGridPosition -= OnEnemyEnteredGridPosition;
-        LevelGrid.Instance.OnEnemyExitedGridPosition -= OnEnemyExitedGridPosition;
         BaseEnemy.OnEnemyDestroyed -= OnEnemyDestroyed;
     }
 }

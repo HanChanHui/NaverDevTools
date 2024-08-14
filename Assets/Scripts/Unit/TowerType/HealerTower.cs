@@ -7,18 +7,16 @@ public class HealerTower : Tower
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform shooterPos;
-    private bool isBulletActive = false;
+    private List<Tower> towersInRange;
     private bool isOneAttack = false;
 
     protected override void Start()
     {
         base.Start();
-        BeamBullet.OnBeamBulletDestroyed += OnBeamBulletDestroyed;
     }
 
     protected override void OnDestroy()
     {
-        BeamBullet.OnBeamBulletDestroyed -= OnBeamBulletDestroyed;
         base.OnDestroy();
     }
 
@@ -27,12 +25,12 @@ public class HealerTower : Tower
         isOneAttack = false;
         while (true)
         {
-            if (!isBulletActive && enemiesInRange.Count > 0)
+            if (towersInRange.Count > 0)
             {
                 // 첫 번째 요소가 null이면 삭제
-                if (enemiesInRange[0] == null)
+                if (towersInRange[0] == null)
                 {
-                    enemiesInRange.RemoveAt(0);
+                    towersInRange.RemoveAt(0);
                     isOneAttack = false;
                 }
                 else
@@ -52,12 +50,12 @@ public class HealerTower : Tower
 
     private void CoAttack()
     {
-        if (enemiesInRange.Count > 0)
+        if (towersInRange.Count > 0)
         {
-            BaseEnemy targetEnemy = enemiesInRange[0];
-            if (targetEnemy != null)
+            Tower targetTower = towersInRange[0];
+            if (targetTower != null)
             {
-                ShootBullet(targetEnemy);
+                ShootBullet(targetTower);
             }
             else
             {
@@ -66,21 +64,15 @@ public class HealerTower : Tower
         }
     }
 
-    private void ShootBullet(BaseEnemy target)
+    private void ShootBullet(Tower target)
     {
-        isBulletActive = true;
-        GameObject bulletInstance = Instantiate(bulletPrefab, shooterPos.position, Quaternion.identity);
-        bulletInstance.transform.SetParent(shooterPos);
-        BeamBullet bullet = bulletInstance.GetComponent<BeamBullet>();
-        if (bullet != null)
+        if(target.Health < target.MaxHealth)
         {
-            bullet.SetEnemy(target, shooterPos);
-            bullet.Damage = attackDamage; // 설정한 데미지 값
+            target.SetHealth((int)attackDamage);
         }
+       
+        
     }
 
-    private void OnBeamBulletDestroyed()
-    {
-        isBulletActive = false;
-    }
+    
 }

@@ -80,9 +80,9 @@ public class TankerTower : Tower
         }
     }
 
-    public override void TakeDamage(float damage, int obstacleDamage = 1, bool isCritical = false, bool showLabel = false)
+    public override void TakeDamage(float damage, int obstacleDamage = 1, bool showLabel = false)
     {
-        base.TakeDamage(damage, obstacleDamage, isCritical, showLabel);
+        base.TakeDamage(damage, obstacleDamage, showLabel);
         if(healthBar != null)
         {
             healthBar.Show();

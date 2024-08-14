@@ -18,13 +18,13 @@ MonoBehaviour:
   towerID: 0
   towerName: neco
   towerAttackType: 1
-  towerHP: 1200
+  towerHP: 100
   towerDefence: 0
-  towerAttack: 440
-  towerAttackSpeed: 1
+  towerAttack: 20
+  towerAttackSpeed: 0.7
   attackRange: 2
-  towerCost: 7
-  towerRecoveryCost: 7
-  towerRecoveryCostIncrease: 7
+  towerCost: 5
+  towerRecoveryCost: 5
+  towerRecoveryCostIncrease: 5
   width: 1
   height: 1

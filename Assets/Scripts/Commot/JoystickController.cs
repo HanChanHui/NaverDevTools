@@ -14,13 +14,6 @@ public class JoystickController : MonoBehaviour, IPointerDownHandler, IDragHandl
     public delegate void OnAttackDirectionSelected(Vector2 direction);
     public event OnAttackDirectionSelected AttackDirectionSelected;
 
-    void Start()
-    {
-        //mainCamera = Camera.main;
-
-        // 초기화 시 tower의 위치에 따라 조이스틱 배경 위치 설정
-        //SetJoystickPositionToTower();
-    }
     private void OnEnable() 
     {
         mainCamera = Camera.main;
@@ -33,6 +26,7 @@ public class JoystickController : MonoBehaviour, IPointerDownHandler, IDragHandl
         {
             Vector3 screenPosition = mainCamera.WorldToScreenPoint(towerTr);
             joystickBackground.rectTransform.position = screenPosition;
+            joystickHandle.rectTransform.position = screenPosition;
         }
     }
 

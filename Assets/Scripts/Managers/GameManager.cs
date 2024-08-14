@@ -115,56 +115,16 @@ public class GameManager : Singleton<GameManager>
             newPlaceableGO.SetHealth((int)cardData.towerData.towerHP);
         }
 
-        AddPlaceableTowerList(newPlaceableGO);
-        //SetupPlaceable(newPlaceableGO, pDataRef);
-
+        SetupPlaceable(newPlaceableGO, pDataRef);
     }
 
 
-    // private void SetupPlaceable(GameObject go, PlaceableTowerData pDataRef) {
-    //     //Add the appropriate script
-    //     switch (pDataRef.pType) {
-    //         case Placeable.PlaceableType.Unit:
-    //             Unit uScript = go.GetComponent<Unit>();
-    //             uScript.Activate(pFaction, pDataRef); //enables NavMeshAgent
-    //             uScript.OnDealDamage += OnPlaceableDealtDamage;
-    //             uScript.OnProjectileFired += OnProjectileFired;
-    //             AddPlaceableToList(uScript); //add the Unit to the appropriate list
-    //             UIManager.AddHealthUI(uScript);
-    //             break;
+    private void SetupPlaceable(Tower tower, PlaceableTowerData pDataRef) {
+        //Add the appropriate script
+        tower.Init(pDataRef.attackRange, pDataRef.towerAttack, pDataRef.towerAttackSpeed, pDataRef.towerHP, pDataRef.towerDefence);
 
-    //         case Placeable.PlaceableType.Building:
-    //         case Placeable.PlaceableType.Castle:
-    //             Building bScript = go.GetComponent<Building>();
-    //             bScript.Activate(pFaction, pDataRef);
-    //             bScript.OnDealDamage += OnPlaceableDealtDamage;
-    //             bScript.OnProjectileFired += OnProjectileFired;
-    //             AddPlaceableToList(bScript); //add the Building to the appropriate list
-    //             UIManager.AddHealthUI(bScript);
-
-    //             //special case for castles
-    //             if (pDataRef.pType == Placeable.PlaceableType.Castle) {
-    //                 bScript.OnDie += OnCastleDead;
-    //             }
-
-    //             navMesh.BuildNavMesh(); //rebake the Navmesh
-    //             break;
-
-    //         case Placeable.PlaceableType.Obstacle:
-    //             Obstacle oScript = go.GetComponent<Obstacle>();
-    //             oScript.Activate(pDataRef);
-    //             navMesh.BuildNavMesh(); //rebake the Navmesh
-    //             break;
-
-    //         case Placeable.PlaceableType.Spell:
-    //             //Spell sScript = newPlaceable.AddComponent<Spell>();
-    //             //sScript.Activate(pFaction, cardData.hitPoints);
-    //             //TODO: activate the spell and… ?
-    //             break;
-    //     }
-
-    //     go.GetComponent<Placeable>().OnDie += OnPlaceableDead;
-    // }
+        AddPlaceableTowerList(tower);
+    }
 
     public void AddPlaceableTowerList(Tower tower) 
     {

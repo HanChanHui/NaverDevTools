@@ -6,9 +6,6 @@ using UnityEngine;
 public class LevelGrid : MonoBehaviour
 {
     public static LevelGrid Instance { get; private set; }
-
-    public event Action<BaseEnemy, GridPosition> OnEnemyEnteredGridPosition;
-    public event Action<BaseEnemy, GridPosition> OnEnemyExitedGridPosition;
     public event Action<Tower> OnTowerPlaced;
 
     [SerializeField] private Transform gridDebugObjectPrefab;
@@ -55,7 +52,6 @@ public class LevelGrid : MonoBehaviour
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         gridObject.AddEnemy(enemy);
-        OnEnemyEnteredGridPosition?.Invoke(enemy, gridPosition);
     }
 
     public List<Tower> GetTowerListAtGridPosition(GridPosition gridPosition)
@@ -79,7 +75,6 @@ public class LevelGrid : MonoBehaviour
         if(gridObject.HasAnyEnemy())
         {
             gridObject.RemoveEnemy(enemy);
-            OnEnemyExitedGridPosition?.Invoke(enemy, gridPosition);
         }
     }
 

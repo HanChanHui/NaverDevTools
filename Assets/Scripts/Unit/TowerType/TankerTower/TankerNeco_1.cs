@@ -37,7 +37,6 @@ public class TankerNeco_1 : TankerTower
         } else if (direction.x > 0 && direction.y > 0) {
             atkDirection = AttackDirection.Up;
         }
-        Debug.Log(atkDirection);
         UIManager.Instance.HideDirectionJoystickUI();
         joystickController.UnregisterDirectionSelectedHandler(OnAttackDirectionSelected);
         GenerateAttackPattern(atkDirection);
@@ -58,7 +57,6 @@ public class TankerNeco_1 : TankerTower
         foreach (Vector2Int directionVector in directionVectors) {
             
             GridPosition attackGridPosition = gridPosition + new GridPosition(directionVector.x, directionVector.y);
-            Debug.Log(gridPosition+", "+ directionVector);
             atkRangeGridList.Add(attackGridPosition);
         }
 

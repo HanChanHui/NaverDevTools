@@ -64,7 +64,7 @@ public abstract class BaseEnemy : LivingEntity
         }
         else if(enemyType == EnemyType.Boss)
         {
-            SetHealth(500);
+            SetHealth(400);
         }
         healthBar.Init();
 
@@ -340,9 +340,9 @@ public abstract class BaseEnemy : LivingEntity
         }
     }
 
-    public override void TakeDamage(float damage, int obstacleDamage = 1, bool isCritical = false, bool showLabel = false)
+    public override void TakeDamage(float damage, int obstacleDamage = 1, bool showLabel = false)
     {
-        base.TakeDamage(damage, obstacleDamage, isCritical, showLabel);
+        base.TakeDamage(damage, obstacleDamage, showLabel);
         EnemyHit(damage);
         healthBar.Show();
         healthBar.UpdateHealth(health, maxHealth);

@@ -375,8 +375,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 1
-  attackDamage: 320
-  attackSpeed: 1.2
+  attackDamage: 50
+  attackSpeed: 4
   bulletPrefab: {fileID: 8467543171443383205, guid: a79c7b7888a215a47b6892a2589061b7, type: 3}
   healthBar: {fileID: 322427318199301787}
   effectSpawnDistance: 2

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1160565228263179664}
   - component: {fileID: 9138208861548744851}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: towerSprite_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerData: {fileID: 0}
+  attackRangeType: 0
 --- !u!1 &5661550504897726671
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7760167417047179077}
   - component: {fileID: 5947130293320598352}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: towerSprite_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

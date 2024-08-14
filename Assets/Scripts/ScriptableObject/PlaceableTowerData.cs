@@ -15,7 +15,7 @@ public class PlaceableTowerData : ScriptableObject
 
     [Header("Tower Battle")]
     public TowerAttackType towerAttackType;
-    public float towerHP;
+    public int towerHP;
     public float towerDefence;
     public float towerAttack;
     public float towerAttackSpeed;
