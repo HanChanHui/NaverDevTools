@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd92ee31feb00e4c8a6d62bab71e620, type: 3}
+  m_Name: DealerTower_2
+  m_EditorClassIdentifier: 
+  towerType: 1
+  towerPrefab: {fileID: 3888004110574695357, guid: 9efe014661ade9244a517fdb3d1e4127, type: 3}
+  towerIconPrefab: {fileID: 2858560182924785193, guid: 837556026ea5419429d0af4062f01762, type: 3}
+  towerID: 0
+  towerName: neco2
+  towerAttackType: 1
+  towerHP: 100
+  towerDefence: 0
+  towerAttack: 10
+  towerAttackSpeed: 0.3
+  attackRange: 4
+  towerCost: 2
+  towerRecoveryCost: 2
+  towerRecoveryCostIncrease: 4
+  width: 1
+  height: 1

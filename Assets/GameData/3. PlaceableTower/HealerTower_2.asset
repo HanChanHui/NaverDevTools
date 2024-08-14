@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd92ee31feb00e4c8a6d62bab71e620, type: 3}
+  m_Name: HealerTower_2
+  m_EditorClassIdentifier: 
+  towerType: 1
+  towerPrefab: {fileID: 3294395087921489502, guid: fdb8ddab8a685144dbe414a46aeb1b7b, type: 3}
+  towerIconPrefab: {fileID: 807696782923670664, guid: a0c005e7208a1c044a10d808413ba574, type: 3}
+  towerID: 0
+  towerName: noeo6
+  towerAttackType: 1
+  towerHP: 200
+  towerDefence: 0
+  towerAttack: 30
+  towerAttackSpeed: 1
+  attackRange: 1
+  towerCost: 3
+  towerRecoveryCost: 3
+  towerRecoveryCostIncrease: 5
+  width: 1
+  height: 1

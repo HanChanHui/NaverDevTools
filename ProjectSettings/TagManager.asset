@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -11,13 +13,13 @@ TagManager:
   - 
   - Water
   - UI
+  - Background
+  - GridVisual
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - Tower
+  - Block
   - 
   - 
   - 
@@ -40,4 +42,31 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3318763487
+    locked: 0
+  - name: BackgroundSide
+    uniqueID: 836742859
+    locked: 0
+  - name: Grid
+    uniqueID: 1653054675
+    locked: 0
+  - name: BackObject
+    uniqueID: 3600328653
+    locked: 0
+  - name: TwoLayerGrid
+    uniqueID: 2820624345
+    locked: 0
+  - name: Unit
+    uniqueID: 714422313
+    locked: 0
+  - name: UI
+    uniqueID: 956419079
+    locked: 0
+  - name: PlaceGrid
+    uniqueID: 3837358787
+    locked: 0
+  - name: Bullet
+    uniqueID: 3096149627
     locked: 0
