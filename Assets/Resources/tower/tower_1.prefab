@@ -208,8 +208,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 2
-  attackDamage: 20
-  attackSpeed: 0.2
+  attackDamage: 440
+  attackSpeed: 1
   bulletPrefab: {fileID: 5870224901932606103, guid: bf116db3d1a4aa94eb6a8cc6b2621d49, type: 3}
   shooterPos: {fileID: 5486871852820634755}
   joystickController: {fileID: 0}

@@ -5,9 +5,9 @@ using Pathfinding;
 
 public class TankerTower : Tower
 {
-
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] protected HealthLabel healthBar;
-
+    [SerializeField] private float effectSpawnDistance = 1f;
     protected override void Start() {
         base.Start();
 
@@ -24,8 +24,16 @@ public class TankerTower : Tower
         {
             if (enemiesInRange.Count > 0)
             {
-                CoAttack();
-                yield return new WaitForSeconds(attackSpeed);
+                // 첫 번째 요소가 null이면 삭제
+                if (enemiesInRange[0] == null)
+                {
+                    enemiesInRange.RemoveAt(0);
+                }
+                else
+                {
+                    CoAttack();
+                    yield return new WaitForSeconds(attackSpeed);
+                }
             }
             yield return new WaitForSeconds(0.1f);
         }
@@ -33,20 +41,43 @@ public class TankerTower : Tower
 
     private void CoAttack()
     {
-        foreach (BaseEnemy enemy in enemiesInRange)
+        if (enemiesInRange.Count > 0)
         {
-            if(enemy != null)
+            BaseEnemy targetEnemy = enemiesInRange[0];
+            if (targetEnemy != null)
             {
-                if (Vector2.Distance(transform.position, enemy.transform.position) <= maxDistance) {
-                    AttackEnemy(enemy);
-                }
+                ShootEffect(targetEnemy);
+            }
+            else
+            {
+                enemiesInRange.RemoveAt(0); // null인 적을 리스트에서 삭제
             }
         }
     }
 
-    private void AttackEnemy(BaseEnemy enemy)
+    private void ShootEffect(BaseEnemy enemy)
     {
-        enemy.TakeDamage(attackDamage); // 적에게 데미지를 입힘
+        Vector3 direction = enemy.transform.position - transform.position;
+        direction.Normalize();
+
+        // 타워 근처의 위치 계산
+        Vector3 spawnPosition = enemy.transform.position - direction * effectSpawnDistance;
+
+        GameObject attackEffectInstance = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+       
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        attackEffectInstance.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+        Rigidbody2D rb = attackEffectInstance.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = direction * attackSpeed;
+        }
+
+        if (attackEffectInstance != null)
+        {
+            enemy.TakeDamage(attackDamage);
+        }
     }
 
     public override void TakeDamage(float damage, int obstacleDamage = 1, bool isCritical = false, bool showLabel = false)

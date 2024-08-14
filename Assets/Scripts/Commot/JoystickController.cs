@@ -16,9 +16,14 @@ public class JoystickController : MonoBehaviour, IPointerDownHandler, IDragHandl
 
     void Start()
     {
-        mainCamera = Camera.main;
+        //mainCamera = Camera.main;
 
         // 초기화 시 tower의 위치에 따라 조이스틱 배경 위치 설정
+        //SetJoystickPositionToTower();
+    }
+    private void OnEnable() 
+    {
+        mainCamera = Camera.main;
         SetJoystickPositionToTower();
     }
 
@@ -36,7 +41,7 @@ public class JoystickController : MonoBehaviour, IPointerDownHandler, IDragHandl
         OnDrag(eventData);
     }
 
-     public void OnDrag(PointerEventData eventData)
+    public void OnDrag(PointerEventData eventData)
     {
         Vector2 position;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -70,15 +75,19 @@ public class JoystickController : MonoBehaviour, IPointerDownHandler, IDragHandl
         // 대각선 끝까지 이동 시 이벤트 발생
         if (inputVector.magnitude >= threshold)
         {
-            OnAttackDirectionSelecte(inputVector);
+            AttackDirectionSelected?.Invoke(inputVector);
             GameManager.Instance.Resume();
         }
     }
 
-    private void OnAttackDirectionSelecte(Vector2 direction)
+    public void RegisterDirectionSelectedHandler(OnAttackDirectionSelected handler)
     {
-        // 공격 방향 선택 이벤트 호출
-        AttackDirectionSelected?.Invoke(direction);
+        AttackDirectionSelected += handler;
+    }
+
+    public void UnregisterDirectionSelectedHandler(OnAttackDirectionSelected handler)
+    {
+        AttackDirectionSelected -= handler;
     }
 
     public void OnPointerUp(PointerEventData eventData)

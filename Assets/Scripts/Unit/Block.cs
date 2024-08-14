@@ -1,7 +1,6 @@
 using Consts;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Block : LivingEntity
@@ -33,7 +32,9 @@ public class Block : LivingEntity
         base.TakeDamage(damage, obstacleDamage, isCritical, showLabel);
         healthBar.Show();
         healthBar.UpdateHealth(health, maxHealth);
-
+        int count = GameManager.Instance.EnemyMaxDeathCount + 1;
+        GameManager.Instance.EnemyMaxDeathCount = count;
+        Debug.Log(GameManager.Instance.EnemyMaxDeathCount);
         if (health <= 0)
         {
             DestroyTarget();
@@ -47,5 +48,4 @@ public class Block : LivingEntity
         Destroy(gameObject);
     }
 
-    
 }

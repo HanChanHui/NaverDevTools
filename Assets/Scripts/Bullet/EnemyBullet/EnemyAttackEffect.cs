@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyAttackEffect : MonoBehaviour
 {
-    [SerializeField] private float speed;
 
 
     void Start()

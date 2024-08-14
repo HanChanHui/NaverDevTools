@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DealerNeco_2 : DealerTower {
+public class TankerNeco_2 : TankerTower
+{
     private GridPosition gridPosition;
     private List<GridPosition> atkRangeGridList;
     private AttackDirection atkDirection;
@@ -11,13 +12,9 @@ public class DealerNeco_2 : DealerTower {
     public JoystickController joystickController;
 
     int[,] basePatternArray = new int[,] {
-        { 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 1, 1, 1, 0 },
-        { 0, 0, 0, 0, 1, 1, 1 },
-        { 0, 0, 0, 1, 1, 1, 0 },
-        { 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0 }
+        { 0, 0, 1 },
+        { 0, 0, 1 },
+        { 0, 0, 1 },
     };
 
     protected override void Start() {
@@ -40,7 +37,7 @@ public class DealerNeco_2 : DealerTower {
         } else if (direction.x > 0 && direction.y > 0) {
             atkDirection = AttackDirection.Up;
         }
-
+        Debug.Log(atkDirection);
         UIManager.Instance.HideDirectionJoystickUI();
         joystickController.UnregisterDirectionSelectedHandler(OnAttackDirectionSelected);
         GenerateAttackPattern(atkDirection);
@@ -59,8 +56,9 @@ public class DealerNeco_2 : DealerTower {
         List<Vector2Int> directionVectors = GetDirectionVector(direction);
 
         foreach (Vector2Int directionVector in directionVectors) {
-            // 패턴을 적용하여 각 그리드 위치에 대한 계산 수행
+            
             GridPosition attackGridPosition = gridPosition + new GridPosition(directionVector.x, directionVector.y);
+            Debug.Log(gridPosition+", "+ directionVector);
             atkRangeGridList.Add(attackGridPosition);
         }
 

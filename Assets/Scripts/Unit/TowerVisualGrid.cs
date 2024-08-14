@@ -9,12 +9,12 @@ public class TowerVisualGrid : MonoBehaviour
     {
         Straight,
         Jet,
+        Line,
     }
 
 
     [SerializeField] private PlaceableTowerData towerData;
 
-    private GridPosition gridPosition;
     [SerializeField] private AttackRangeType attackRangeType;
     private GridSystemVisualSingle[,] gridSystemVisualSingleArray;
     private Material material;
@@ -31,13 +31,10 @@ public class TowerVisualGrid : MonoBehaviour
             towerData.attackRange
         ];
         
-        gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
         material = GridSystemVisual.Instance.GetGridVisualTypeMaterial(GridVisualType.Forbidden);
 
         SetType(this.attackRangeType);
         rangeFunc();
-
-
     }
 
     private void SetType(AttackRangeType type)
@@ -65,7 +62,7 @@ public class TowerVisualGrid : MonoBehaviour
         }
     }
 
-    int[,] basePatternArray = new int[,] {
+    int[,] jetPatternArray = new int[,] {
         { 1, 1, 1, 0 },
         { 0, 1, 1, 1 },
         { 1, 1, 1, 0 },
@@ -73,15 +70,39 @@ public class TowerVisualGrid : MonoBehaviour
 
     private void JetAttackRange() 
     {
-        int rows = basePatternArray.GetLength(0);
-        int cols = basePatternArray.GetLength(1);
+        int rows = jetPatternArray.GetLength(0);
+        int cols = jetPatternArray.GetLength(1);
 
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
-                if (basePatternArray[y, x] == 1) 
+                if (jetPatternArray[y, x] == 1) 
                 {
                     Vector3 worldPosition = transform.position + new Vector3(x * 2 , (y - 1) * 2);
-                    Debug.Log(worldPosition + "," + x + ", "+ y);
+                    Transform gridSystemVisualSingleTransform = Instantiate(ResourceManager.Instance.GridSystemVisualSingPrefab, worldPosition, Quaternion.identity);
+                    gridSystemVisualSingleTransform.transform.parent = transform;
+                    gridSystemVisualSingleArray[x, y] = gridSystemVisualSingleTransform.GetComponent<GridSystemVisualSingle>();
+                    gridSystemVisualSingleArray[x, y].Hide();
+                    gridSystemVisualSingleArray[x, y].GridLayerChange(LayerName.PlaceGrid.ToString());
+                }
+            }
+        }
+    }
+
+    int[,] LinePatternArray = new int[,] {
+        { 0, 1 },
+        { 0, 1 },
+        { 0, 1 },
+    };
+
+    private void LineAttackRange() 
+    {
+        int rows = LinePatternArray.GetLength(0);
+        int cols = LinePatternArray.GetLength(1);
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                if (LinePatternArray[y, x] == 1) 
+                {
+                    Vector3 worldPosition = transform.position + new Vector3(x * 2 , (y - 1) * 2);
                     Transform gridSystemVisualSingleTransform = Instantiate(ResourceManager.Instance.GridSystemVisualSingPrefab, worldPosition, Quaternion.identity);
                     gridSystemVisualSingleTransform.transform.parent = transform;
                     gridSystemVisualSingleArray[x, y] = gridSystemVisualSingleTransform.GetComponent<GridSystemVisualSingle>();
@@ -129,6 +150,8 @@ public class TowerVisualGrid : MonoBehaviour
                 return StraightAttackRange;
             case AttackRangeType.Jet:
                 return JetAttackRange;
+            case AttackRangeType.Line:
+                return LineAttackRange;
             default:
                 return null;
         }
@@ -137,8 +160,13 @@ public class TowerVisualGrid : MonoBehaviour
     public void DestroyGridPositionList() 
     {
         for (int x = 0; x < towerData.width; x++) {
-            for (int y = 0; y < towerData.height; y++) {
-                Destroy(gridSystemVisualSingleArray[x, y].gameObject);
+            for (int y = 0; y < towerData.height; y++) 
+            {
+                if(gridSystemVisualSingleArray[x, y] != null)
+                {
+                    Destroy(gridSystemVisualSingleArray[x, y].gameObject);
+                }
+                
             }
         }
     }

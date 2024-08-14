@@ -2,7 +2,6 @@ using Consts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DealerNeco_1 : DealerTower
 {
@@ -20,7 +19,7 @@ public class DealerNeco_1 : DealerTower
 
         gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
         joystickController = UIManager.Instance.GetJoystickPanel().GetComponentInChildren<JoystickController>();
-        joystickController.AttackDirectionSelected += OnAttackDirectionSelected;
+        joystickController.RegisterDirectionSelectedHandler(OnAttackDirectionSelected);
     }
 
     void OnAttackDirectionSelected(Vector2 direction)
@@ -38,6 +37,7 @@ public class DealerNeco_1 : DealerTower
         }
  
         UIManager.Instance.HideDirectionJoystickUI();
+        joystickController.UnregisterDirectionSelectedHandler(OnAttackDirectionSelected);
         GenerateAttackPattern(atkDirection);
     }
 
@@ -104,11 +104,6 @@ public class DealerNeco_1 : DealerTower
         }
 
         enemiesInRange.RemoveAll(enemy => !currentEnemiesInRange.Contains(enemy));
-    }
-
-    private void OnDisable() 
-    {
-        joystickController.AttackDirectionSelected -= OnAttackDirectionSelected;
     }
 
 }

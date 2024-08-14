@@ -25,7 +25,7 @@ public class DeckData : ScriptableObject
     {
         System.Random random = new System.Random(); 
         for (int i = cards.Length - 1; i > 0; i--) {
-            int j = random.Next(0, i + 2);
+            int j = random.Next(0, i + 1);
             // Swap cards[i] with the element at random index
             CardData temp = cards[i];
             cards[i] = cards[j];

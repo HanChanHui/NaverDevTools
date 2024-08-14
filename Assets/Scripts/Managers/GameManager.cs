@@ -14,6 +14,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private int natureAmount;
     [SerializeField] private int enemyWave;
     [SerializeField] private int enemySpawnCount = 0;
+    [SerializeField] private int enemyMaxSpawnCount = 0;
     [SerializeField] private int enemyDeathCount;
     [SerializeField] private int enemyMaxDeathCount;
     [SerializeField] private int targetDeathCount;
@@ -24,10 +25,13 @@ public class GameManager : Singleton<GameManager>
 
     private bool isDoubleSpeed = false;
     private bool timePaused = false;
+    private bool isTimeTwoSpeed = false;
 
     public int EnemySpawnCount {get {return enemySpawnCount;} set{enemySpawnCount = value;}}
+    public int EnemyMaxSpawnCount {get{return enemyMaxSpawnCount;} set{enemyMaxSpawnCount = value;}}
     public int EnemyMaxDeathCount {get{return enemyMaxDeathCount;} set{enemyMaxDeathCount = value;}}
     public int TargetDeathCount {get{return targetDeathCount;} set{targetDeathCount = value;}}
+    public bool IsTimeTwoSpeed {get{return isTimeTwoSpeed;} set{isTimeTwoSpeed = value;}}
     public List<Transform> TargetList {get{return targetList;} set{targetList = value;}}
 
 
@@ -68,7 +72,14 @@ public class GameManager : Singleton<GameManager>
             return;
         }
 
-        Time.timeScale = 1;
+        if(isTimeTwoSpeed)
+        {
+            Time.timeScale = 2;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
         timePaused = false;
     }
 
@@ -77,10 +88,12 @@ public class GameManager : Singleton<GameManager>
         if (isDoubleSpeed)
         {
             Time.timeScale = 1;
+            isTimeTwoSpeed = false;
         }
         else
         {
             Time.timeScale = 2;
+            isTimeTwoSpeed = true;
         }
         
         return isDoubleSpeed = !isDoubleSpeed;
@@ -192,7 +205,7 @@ public class GameManager : Singleton<GameManager>
             enemyList.Remove(enemy);
             enemyDeathCount++;
             OnEnemyDeath?.Invoke(enemyDeathCount);
-            if(enemyDeathCount >= enemyMaxDeathCount)
+            if(enemyDeathCount >= enemyMaxSpawnCount)
             {
                 OnEndGameVictory();
             }

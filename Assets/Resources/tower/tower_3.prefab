@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 518396575251746760}
   - component: {fileID: 4501491416588237551}
   - component: {fileID: 6245045972962530028}
-  - component: {fileID: 3867217266225392030}
+  - component: {fileID: 5338905933539610194}
   m_Layer: 11
   m_Name: tower_3
   m_TagString: Untagged
@@ -108,7 +108,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.0105894, y: 1.6336796}
   m_EdgeRadius: 0
---- !u!114 &3867217266225392030
+--- !u!114 &5338905933539610194
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,14 +117,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2738529185662124643}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffbbd94a3d408ff41b63e29e408806eb, type: 3}
+  m_Script: {fileID: 11500000, guid: d36d9ffa8feecf04594df8f8edbdf165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesInRange: []
   maxDistance: 1
-  attackDamage: 10
-  attackSpeed: 1
+  attackDamage: 300
+  attackSpeed: 1.2
+  bulletPrefab: {fileID: 8467543171443383205, guid: a79c7b7888a215a47b6892a2589061b7, type: 3}
   healthBar: {fileID: 8701763534915965151}
+  effectSpawnDistance: 1
+  joystickController: {fileID: 0}
 --- !u!1 &5768827657704837899
 GameObject:
   m_ObjectHideFlags: 0
