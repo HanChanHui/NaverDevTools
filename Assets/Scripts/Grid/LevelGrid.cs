@@ -154,6 +154,4 @@ public class LevelGrid : MonoBehaviour
         return gridObject.GetEnemy();
     }
 
-    public GridSystem<GridObject> GetGridSystem() => gridSystem;
-
 }

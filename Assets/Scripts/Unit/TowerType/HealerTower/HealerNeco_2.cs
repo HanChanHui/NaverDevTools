@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TankerNeco_2 : TankerTower
+public class HealerNeco_2 : HealerTower
 {
     private GridPosition gridPosition;
     private List<GridPosition> atkRangeGridList;
@@ -12,9 +12,10 @@ public class TankerNeco_2 : TankerTower
     public JoystickController joystickController;
 
     int[,] basePatternArray = new int[,] {
-        { 0, 0, 1 },
-        { 0, 0, 1 },
-        { 0, 0, 1 },
+        { 1, 1, 1 },
+        { 1, 0, 1 },
+        { 1, 1, 1 },
+       
     };
 
     protected override void Start() {
@@ -37,6 +38,7 @@ public class TankerNeco_2 : TankerTower
         } else if (direction.x > 0 && direction.y > 0) {
             atkDirection = AttackDirection.Up;
         }
+
         UIManager.Instance.HideDirectionJoystickUI();
         joystickController.UnregisterDirectionSelectedHandler(OnAttackDirectionSelected);
         GenerateAttackPattern(atkDirection);
@@ -44,18 +46,19 @@ public class TankerNeco_2 : TankerTower
 
     private IEnumerator CoCheckAttackRange() {
         while (true) {
-            FindEnemy();
-            yield return new WaitForSeconds(0.1f);
+            FindTower();
+            yield return new WaitForSeconds(1f);
         }
     }
 
-    public void GenerateAttackPattern(AttackDirection direction) {
+    public void GenerateAttackPattern(AttackDirection direction) 
+    {
         atkRangeGridList = new List<GridPosition>();
 
         List<Vector2Int> directionVectors = GetDirectionVector(direction, basePatternArray);
 
         foreach (Vector2Int directionVector in directionVectors) {
-            
+            // 패턴을 적용하여 각 그리드 위치에 대한 계산 수행
             GridPosition attackGridPosition = gridPosition + new GridPosition(directionVector.x, directionVector.y);
             atkRangeGridList.Add(attackGridPosition);
         }
@@ -64,28 +67,29 @@ public class TankerNeco_2 : TankerTower
         StartCoroutine(CoCheckAttackRange());
     }
 
+    
+
     private void FilterInvalidGridPositions() {
         atkRangeGridList.RemoveAll(gridPos =>
-            !LevelGrid.Instance.IsValidGridPosition(gridPos) ||
-            LevelGrid.Instance.HasAnyBlockOnGridPosition(gridPos) ||
-            LevelGrid.Instance.HasAnyTowerOnGridPosition(gridPos)
+            !LevelGrid.Instance.IsValidGridPosition(gridPos)
         );
     }
 
-    private void FindEnemy() {
-        List<BaseEnemy> currentEnemiesInRange = new List<BaseEnemy>();
+    private void FindTower() {
+        List<Tower> currentTowersInRange = new List<Tower>();
 
         foreach (GridPosition gridPos in atkRangeGridList) {
-            BaseEnemy enemy = LevelGrid.Instance.GetEnemiesAtGridPosition(gridPos);
-            if (enemy != null && !enemiesInRange.Contains(enemy)) {
-                enemiesInRange.Add(enemy);
+            Tower tower = LevelGrid.Instance.GetTowerAtGridPosition(gridPos);
+            if (tower != null && !towersInRange.Contains(tower)) 
+            {
+                towersInRange.Add(tower);
+                towersInRange.Sort((t1, t2) => t1.Health.CompareTo(t2.Health));
             }
-            if (enemy != null) {
-                currentEnemiesInRange.Add(enemy);
+            if (tower != null) {
+                currentTowersInRange.Add(tower);
             }
         }
 
-        enemiesInRange.RemoveAll(enemy => !currentEnemiesInRange.Contains(enemy));
+        towersInRange.RemoveAll(tower => !currentTowersInRange.Contains(tower));
     }
-
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-using UnityEngine.UI;
+using System.Linq;
 using TMPro;
 
 
@@ -25,8 +25,8 @@ public abstract class BaseEnemy : LivingEntity
     [SerializeField] protected float attackInterval = 1f; // 공격 간격
     [SerializeField] protected float moveAttackSpeed = 1f;
     [SerializeField] protected float moveWaitTime = 1f;
-    [SerializeField] private float knockbackForce = 2f;
-    [SerializeField] private float knockbackDuration = 0.2f; // 밀려나는 시간
+    private float knockbackForce = 1.5f;
+    private float knockbackDuration = 0.2f; // 밀려나는 시간
 
     
     [SerializeField] private HealthLabel healthBar;
@@ -60,15 +60,16 @@ public abstract class BaseEnemy : LivingEntity
 
         if(enemyType == EnemyType.General)
         {
-            SetHealth(100);
+            InitHealth(100);
         }
         else if(enemyType == EnemyType.Boss)
         {
-            SetHealth(400);
+            InitHealth(400);
         }
         healthBar.Init();
 
         attackCoroutine = StartCoroutine(CoCheckDistance());
+
     }
 
     private void OnEnable()
@@ -84,7 +85,6 @@ public abstract class BaseEnemy : LivingEntity
             UpdateDirection();
             CheckTargetReached();
             UpdateGridPosition();
-            GridRangeFind();
 
             yield return new WaitForSeconds(0.1f);
         }
@@ -134,7 +134,7 @@ public abstract class BaseEnemy : LivingEntity
             {
                 if (!isAttackingTower)
                 {
-                    targetTower = FindNearestTowerInRange();
+                    GridRangeFindAndCheckDirection();
                     if (targetTower != null)
                     {
                         SetNewTarget(originalTarget);
@@ -148,9 +148,8 @@ public abstract class BaseEnemy : LivingEntity
                     }
                     else if(towerList.Count > 0 && !isMoveAttacking)
                     {
-                        aiPath.canMove = true; // 이동 재개
+                        aiPath.canMove = true;
                         
-
                         if(towerList[0] == null)
                         {
                             towerList.RemoveAt(0);
@@ -163,94 +162,46 @@ public abstract class BaseEnemy : LivingEntity
                     }
                 }
     
-                yield return new WaitForSeconds(0.1f); // 조정 가능한 딜레이
+                yield return new WaitForSeconds(0.1f);
             }
         }
-    
-        private Tower FindNearestTowerInRange() 
-        {
-            List<GridPosition> offsetGridPosition = new List<GridPosition>();
-    
-            float velX = aiPath.desiredVelocity.x;
-            float velY = aiPath.desiredVelocity.y;
-    
-            if (Mathf.Abs(velX) > 0.01f && Mathf.Abs(velY) > 0.01f) {
-                int xDirection = velX > 0 ? 1 : -1;
-                int yDirection = velY > 0 ? 1 : -1;
-    
-                // 대각선 이동 처리
-                offsetGridPosition.Add(new GridPosition(0, yDirection));
-                offsetGridPosition.Add(new GridPosition(xDirection, yDirection));
-            } 
-            else if (Mathf.Abs(velX) > 0.01f) 
-            {
-                int xDirection = velX > 0 ? 1 : -1;
-                // 수평 이동 처리
-                offsetGridPosition.Add(new GridPosition(xDirection, 0));
-            } 
-            else if (Mathf.Abs(velY) > 0.01f) 
-            {
-                int yDirection = velY > 0 ? 1 : -1;
-                // 수직 이동 처리
-                offsetGridPosition.Add(new GridPosition(0, yDirection));
-            }
-    
-            foreach (GridPosition findPosition in offsetGridPosition) 
-            {
-                GridPosition testGridPosition = currentGridPosition + findPosition;
-    
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition)) 
-                {
-                    continue;
-                }
 
-                if(LevelGrid.Instance.HasAnyBlockOnGridPosition(testGridPosition))
-                {
-                    continue;
-                }
-    
-                if (LevelGrid.Instance.HasAnyTowerOnGridPosition(testGridPosition)) 
-                {
-                    return LevelGrid.Instance.GetTowerAtGridPosition(testGridPosition);
-                }
-            }
-    
-            return null;
-        }
-
-   
-    private void GridRangeFind() {
-        List<Tower> foundTowers = new List<Tower>();
+    private void GridRangeFindAndCheckDirection() {
+        List<Tower> newTowerList = new List<Tower>();
+        targetTower = null; // 초기화
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, maxDistance, LayerMask.GetMask("Tower"));
 
-        foreach (var hit in hits) 
-        {
+        foreach (var hit in hits) {
             Tower tower = hit.GetComponent<Tower>();
-            if (tower != null) 
-            {
-                foundTowers.Add(tower);
+            if (tower != null) {
+                newTowerList.Add(tower); // 새로운 리스트에 타워 추가
+
+                if (IsTowerInMovingDirection(tower.transform.position)) {
+                    targetTower = tower;
+                }
             }
         }
+
         DrawCircle(transform.position, maxDistance);
 
-        foreach (Tower tower in towerList)
+        if(newTowerList.Count <= 0)
         {
-            if(!foundTowers.Contains(tower))
-            {
-                isMoveAttacking = false;
-                StopAttacking();
-            }
+            isMoveAttacking = false;
         }
-        towerList.RemoveAll(tower => !foundTowers.Contains(tower));
 
-       foreach (Tower tower in foundTowers) 
-       {
-            if (!towerList.Contains(tower))
-            {
-                towerList.Add(tower);
-            }
-        }
+        // 새로운 리스트로 기존 리스트 교체
+        towerList = newTowerList;
+    }
+
+    private bool IsTowerInMovingDirection(Vector3 towerPosition) {
+        Vector3 directionToTower = (towerPosition - transform.position).normalized;
+        Vector3 movingDirection = aiPath.desiredVelocity.normalized;
+
+        float dotProduct = Vector3.Dot(directionToTower, movingDirection);
+
+        // 이동 방향과 타워 방향이 거의 일치하면 true 반환
+        return dotProduct > 0.9f;
     }
     #endregion
 
@@ -270,37 +221,33 @@ public abstract class BaseEnemy : LivingEntity
     }
 
     #region Tower Crash
-    private void HandleTowerPlaced(Tower tower) 
-        {
-            foreach (GridPosition grid in tower.GridPositionList) 
+        private void HandleTowerPlaced(Tower tower) {
+            if (tower.GridPositionList.Contains(currentGridPosition)) 
             {
-                if (grid == currentGridPosition) 
-                {
-                    Vector3 directionToEnemy = (transform.position - tower.transform.position).normalized;
-                    Vector3 knockbackPosition = GetSafeKnockbackPosition(directionToEnemy);
-                    StartCoroutine(KnockbackRoutine(knockbackPosition));
-                }
+                Vector3 directionToEnemy = (transform.position - tower.transform.position).normalized;
+                Vector3 knockbackPosition = GetSafeKnockbackPosition(directionToEnemy);
+                StartCoroutine(KnockbackRoutine(knockbackPosition));
             }
         }
-    
+
         private Vector3 GetSafeKnockbackPosition(Vector3 initialDirection) {
             Vector3[] directions = { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
             Vector3 bestDirection = initialDirection;
-    
+            
             foreach (var direction in directions) {
-                Vector3 checkPosition = transform.position + direction;
-                if (IsPositionBlocked(checkPosition)) {
-                    bestDirection = -direction;
+                Vector3 checkPosition = transform.position + (direction * knockbackForce);
+                if (IsPositionBlocked(checkPosition)) 
+                {
+                    bestDirection = direction;
                     break;
                 }
             }
-    
             return transform.position + bestDirection * knockbackForce;
         }
     
         private bool IsPositionBlocked(Vector3 position) {
-            Collider2D hitCollider = Physics2D.OverlapCircle(position, 1f, LayerMask.GetMask("Block"));
-            return hitCollider != null;
+            Collider2D hitCollider = Physics2D.OverlapCircle(position, 0.7f, LayerMask.GetMask("Block"));
+            return hitCollider == null;
         }
     
         private IEnumerator KnockbackRoutine(Vector3 targetPosition) {
@@ -323,12 +270,9 @@ public abstract class BaseEnemy : LivingEntity
     
     protected void StartMoveAttacking(Tower targetTower)
     {
-        if (moveAttackCoroutine != null)
-        {
-            StopCoroutine(moveAttackCoroutine);
+        if (moveAttackCoroutine == null) {
+            moveAttackCoroutine = StartCoroutine(MovingAttackTarget(targetTower));
         }
-
-        moveAttackCoroutine = StartCoroutine(MovingAttackTarget(targetTower));
     }
 
     protected void StopAttacking()
@@ -379,5 +323,6 @@ public abstract class BaseEnemy : LivingEntity
     protected void SetNewTarget(Transform newTarget)
     {
         destinationSetter.target = newTarget;
+        aiPath.canMove = true;
     }
 }

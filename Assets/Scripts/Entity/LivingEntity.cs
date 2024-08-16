@@ -22,6 +22,7 @@ public class LivingEntity : MonoBehaviour
 
     public virtual void SetHealth(int heal) {
         health += heal;
+
         if(health >= maxHealth)
         {
             health = maxHealth;

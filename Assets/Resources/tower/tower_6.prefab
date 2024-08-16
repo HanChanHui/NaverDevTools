@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3213297280300278566}
-  - component: {fileID: 2177274660221609498}
+  - component: {fileID: 2507211482568547872}
   m_Layer: 11
   m_Name: tower_6
   m_TagString: Untagged
@@ -31,10 +31,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7789670366845384347}
-  - {fileID: 5051626374288186062}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2177274660221609498
+--- !u!114 &2507211482568547872
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,47 +42,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3294395087921489502}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49be2eae79b700b41ae4bcdd54115a5b, type: 3}
+  m_Script: {fileID: 11500000, guid: a331ee656c59b7f40baea2220f580dbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesInRange: []
-  maxDistance: 2
-  attackDamage: 50
-  attackSpeed: 0.2
-  healthBar: {fileID: 0}
-  bulletPrefab: {fileID: 5870224901932606103, guid: bf116db3d1a4aa94eb6a8cc6b2621d49, type: 3}
-  shooterPos: {fileID: 5051626374288186062}
---- !u!1 &5239790980078232331
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5051626374288186062}
-  m_Layer: 11
-  m_Name: Shooter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5051626374288186062
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5239790980078232331}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0.22, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3213297280300278566}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  defence: 0
+  maxDistance: 0
+  attackDamage: 0
+  attackSpeed: 0
+  joystickController: {fileID: 0}
 --- !u!1 &7711295114860602852
 GameObject:
   m_ObjectHideFlags: 0

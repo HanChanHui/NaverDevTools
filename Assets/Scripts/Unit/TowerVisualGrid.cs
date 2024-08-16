@@ -10,6 +10,7 @@ public class TowerVisualGrid : MonoBehaviour
         Straight,
         Jet,
         Line,
+        Round,
     }
 
 
@@ -113,6 +114,32 @@ public class TowerVisualGrid : MonoBehaviour
         }
     }
 
+    int[,] roundPatternArray = new int[,] {
+        { 1, 1, 1 },
+        { 1, 0, 1 },
+        { 1, 1, 1 },
+    };
+
+    private void RoundAttackRange() 
+    {
+        int rows = roundPatternArray.GetLength(0);
+        int cols = roundPatternArray.GetLength(1);
+
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                if (roundPatternArray[y, x] == 1) 
+                {
+                    Vector3 worldPosition = transform.position + new Vector3((x - cols / 2) * 2, (y - rows / 2) * 2);
+                    Transform gridSystemVisualSingleTransform = Instantiate(ResourceManager.Instance.GridSystemVisualSingPrefab, worldPosition, Quaternion.identity);
+                    gridSystemVisualSingleTransform.transform.parent = transform;
+                    gridSystemVisualSingleArray[x, y] = gridSystemVisualSingleTransform.GetComponent<GridSystemVisualSingle>();
+                    gridSystemVisualSingleArray[x, y].Hide();
+                    gridSystemVisualSingleArray[x, y].GridLayerChange(LayerName.PlaceGrid.ToString());
+                }
+            }
+        }
+    }
+
 
     public void HideAllGridPosition()
     {
@@ -152,6 +179,8 @@ public class TowerVisualGrid : MonoBehaviour
                 return JetAttackRange;
             case AttackRangeType.Line:
                 return LineAttackRange;
+            case AttackRangeType.Round:
+                return RoundAttackRange;
             default:
                 return null;
         }

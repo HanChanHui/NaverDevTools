@@ -112,7 +112,7 @@ public class GameManager : Singleton<GameManager>
 
         if(cardData.towerData.towerType == Consts.TowerType.Tanker)
         {
-            newPlaceableGO.SetHealth((int)cardData.towerData.towerHP);
+            newPlaceableGO.InitHealth((int)cardData.towerData.towerHP);
         }
 
         SetupPlaceable(newPlaceableGO, pDataRef);

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerData: {fileID: 0}
-  attackRangeType: 0
+  attackRangeType: 1
 --- !u!1 &4593228225713915057
 GameObject:
   m_ObjectHideFlags: 0

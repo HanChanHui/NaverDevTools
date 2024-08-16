@@ -41,6 +41,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - Base
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a37add59c250bde49a1b904bb905ac9c
+    m_Address: Assets/GameData/2. Cards/HealerTower_1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Base
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c2fe43a9e1e6ab498a3834f65e7bcd7
+    m_Address: Assets/GameData/2. Cards/HealerTower_2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Base
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 111d97d4281029f44ac1282aa648d0e6, type: 2}
   m_SchemaSet:

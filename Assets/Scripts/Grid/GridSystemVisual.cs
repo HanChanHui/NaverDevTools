@@ -64,8 +64,7 @@ public class GridSystemVisual : MonoBehaviour {
 
                 if (levelGrid.HasAnyBlockTypeOnGridPosition(gridPosition))
                 {
-                    GridPosition newGridPosition = new GridPosition(x, y, 2);
-                    TwoLayerGridSystemVisualSelect(gridSystemVisualBlockPrefab, newGridPosition, x, y);
+                    TwoLayerGridSystemVisualSelect(gridSystemVisualBlockPrefab, gridPosition, x, y);
                 }
                 GridSystemVisualSelect(gridSystemVisualFloorPrefab, gridPosition, x, y);
             }
@@ -75,7 +74,6 @@ public class GridSystemVisual : MonoBehaviour {
     private void GridSystemVisualSelect(Transform prefab, GridPosition gridPosition, int x, int y)
     {
         Vector3 worldPosition = levelGrid.GetWorldPosition(gridPosition);
-        worldPosition.y -= 0.24f; // 임시
         Transform gridSystemVisualOneLayerTransform = Instantiate(prefab, worldPosition, Quaternion.identity);
         gridSystemVisualOneLayerTransform.transform.parent = transform;
         gridSystemVisualOneLayerArray[x, y] = gridSystemVisualOneLayerTransform.GetComponent<GridSystemVisualSingle>();
@@ -83,8 +81,9 @@ public class GridSystemVisual : MonoBehaviour {
 
     private void TwoLayerGridSystemVisualSelect(Transform prefab, GridPosition gridPosition, int x, int y)
     {
+        gridPosition.z = 2;
         Vector3 worldPosition = levelGrid.GetWorldPosition(gridPosition);
-        worldPosition.y -= 0.24f; // 임시
+        worldPosition.y += -0.22f;
         Transform gridSystemVisualTwoLayerTransform = Instantiate(prefab, worldPosition, Quaternion.identity);
         gridSystemVisualTwoLayerTransform.transform.parent = transform;
         gridSystemVisualTwoLayerArray[x, y] = gridSystemVisualTwoLayerTransform.GetComponent<GridSystemVisualSingle>();

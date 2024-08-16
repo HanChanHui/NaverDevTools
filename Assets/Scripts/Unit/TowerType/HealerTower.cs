@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class HealerTower : Tower
 {
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform shooterPos;
-    private List<Tower> towersInRange;
-    private bool isOneAttack = false;
+    protected List<Tower> towersInRange = new List<Tower>();
+    private bool isHealing = false;
+ 
 
     protected override void Start()
     {
@@ -22,57 +21,41 @@ public class HealerTower : Tower
 
     protected override IEnumerator CoCheckDistance()
     {
-        isOneAttack = false;
         while (true)
         {
-            if (towersInRange.Count > 0)
+
+            if (towersInRange.Count > 0 && !isHealing)
             {
-                // 첫 번째 요소가 null이면 삭제
-                if (towersInRange[0] == null)
-                {
-                    towersInRange.RemoveAt(0);
-                    isOneAttack = false;
-                }
-                else
-                {
-                    if(!isOneAttack)
-                    {
-                        isOneAttack = true;
-                        CoAttack();
-                    }
-                    
-                    yield return new WaitForSeconds(attackSpeed);
-                }
+                CoHealTowers();
+                yield return new WaitForSeconds(attackSpeed);
             }
+
             yield return new WaitForSeconds(0.1f);
         }
     }
 
-    private void CoAttack()
+
+    private void CoHealTowers()
     {
+        isHealing = true;
+
         if (towersInRange.Count > 0)
         {
             Tower targetTower = towersInRange[0];
-            if (targetTower != null)
+
+            if (targetTower != null && targetTower.Health < targetTower.MaxHealth)
             {
-                ShootBullet(targetTower);
+                // 힐 시전
+                targetTower.SetHealth((int)attackDamage);
             }
             else
             {
-                enemiesInRange.RemoveAt(0); // null인 적을 리스트에서 삭제
+                // 타워가 풀피가 되거나 null인 경우 리스트에서 제거
+                towersInRange.Sort((t1, t2) => t1.Health.CompareTo(t2.Health));
             }
         }
-    }
 
-    private void ShootBullet(Tower target)
-    {
-        if(target.Health < target.MaxHealth)
-        {
-            target.SetHealth((int)attackDamage);
-        }
-       
-        
+        isHealing = false;
     }
-
     
 }

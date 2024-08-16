@@ -20,10 +20,8 @@ public class MeleeEnemy : BaseEnemy
         }
 
         isAttackingTower = false;
-        isMoveAttacking = true;
         attackCoroutine = StartCoroutine(CoCheckDistance());
         SetNewTarget(originalTarget);
-        AiPath.canMove = true;
     }
 
     protected override IEnumerator MovingAttackTarget(Tower targetTower) 
@@ -37,8 +35,7 @@ public class MeleeEnemy : BaseEnemy
             yield return new WaitForSeconds(moveAttackSpeed);
         }
 
-        isAttackingTower = false;
-        isMoveAttacking = true;
+        AiPath.canMove = true;
     }
 
     // private IEnumerator AttackRoutine(Tower targetTower)

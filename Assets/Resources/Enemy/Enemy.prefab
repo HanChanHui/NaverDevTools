@@ -539,8 +539,6 @@ MonoBehaviour:
   attackInterval: 1.5
   moveAttackSpeed: 1.5
   moveWaitTime: 0.4
-  knockbackForce: 2
-  knockbackDuration: 0.2
   healthBar: {fileID: 4530176063428779052}
   textDamage: {fileID: 4691782142634938849, guid: 334eac695a40a84428127dc3e7e4b6c9, type: 3}
   textDamageSpawnPosition: {fileID: 5168368443059701893}
@@ -566,8 +564,8 @@ MonoBehaviour:
   detailedGizmos: 0
   startEndModifier:
     addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
+    exactStartPoint: 0
+    exactEndPoint: 0
     useRaycasting: 0
     mask:
       serializedVersion: 2

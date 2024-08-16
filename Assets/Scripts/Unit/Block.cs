@@ -22,7 +22,7 @@ public class Block : LivingEntity
         
         if(blockType == BlockType.TargetBlock)
         {
-            SetHealth(100);
+            InitHealth(100);
             GameManager.Instance.AddPlaceableTargetList(transform);
         }
     }

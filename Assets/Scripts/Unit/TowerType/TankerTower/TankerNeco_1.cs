@@ -52,7 +52,7 @@ public class TankerNeco_1 : TankerTower
     public void GenerateAttackPattern(AttackDirection direction) {
         atkRangeGridList = new List<GridPosition>();
 
-        List<Vector2Int> directionVectors = GetDirectionVector(direction);
+        List<Vector2Int> directionVectors = GetDirectionVector(direction, basePatternArray);
 
         foreach (Vector2Int directionVector in directionVectors) {
             
@@ -81,53 +81,6 @@ public class TankerNeco_1 : TankerTower
         return patternList;
     }
 
-    private List<Vector2Int> GetDirectionVector(AttackDirection direction) {
-
-
-        List<Vector2Int> pattern = ConvertPatternToList(basePatternArray);
-
-        switch (direction) {
-            case AttackDirection.Right:
-                return pattern;
-
-            case AttackDirection.Left:
-                return MirrorPattern(pattern); // 좌우 반전으로 Left 방향 변환
-
-            case AttackDirection.Up:
-                return RotatePatternUp(pattern); // 90도 회전으로 Up 방향 변환
-
-            case AttackDirection.Down:
-                return RotatePatternDown(pattern); // 90도 회전으로 Down 방향 변환
-
-            default:
-                return pattern;
-        }
-    }
-
-    private List<Vector2Int> MirrorPattern(List<Vector2Int> pattern) {
-        List<Vector2Int> mirroredPattern = new List<Vector2Int>();
-        foreach (Vector2Int vector in pattern) {
-            mirroredPattern.Add(new Vector2Int(-vector.x, vector.y));
-        }
-        return mirroredPattern;
-    }
-
-    private List<Vector2Int> RotatePatternDown(List<Vector2Int> pattern) {
-        List<Vector2Int> rotatedPattern = new List<Vector2Int>();
-        foreach (Vector2Int vector in pattern) {
-            rotatedPattern.Add(new Vector2Int(vector.y, -vector.x));
-        }
-        return rotatedPattern;
-    }
-
-    private List<Vector2Int> RotatePatternUp(List<Vector2Int> pattern) {
-        List<Vector2Int> rotatedPattern = new List<Vector2Int>();
-        foreach (Vector2Int vector in pattern) {
-            rotatedPattern.Add(new Vector2Int(-vector.y, vector.x));
-        }
-        return rotatedPattern;
-    }
-
     private void FilterInvalidGridPositions() {
         atkRangeGridList.RemoveAll(gridPos =>
             !LevelGrid.Instance.IsValidGridPosition(gridPos) ||
@@ -142,7 +95,6 @@ public class TankerNeco_1 : TankerTower
         foreach (GridPosition gridPos in atkRangeGridList) {
             BaseEnemy enemy = LevelGrid.Instance.GetEnemiesAtGridPosition(gridPos);
             if (enemy != null && !enemiesInRange.Contains(enemy)) {
-                Debug.Log("발견 : " + enemy);
                 enemiesInRange.Add(enemy);
             }
             if (enemy != null) {

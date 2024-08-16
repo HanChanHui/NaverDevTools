@@ -56,7 +56,7 @@ public class DealerNeco_2 : DealerTower {
     public void GenerateAttackPattern(AttackDirection direction) {
         atkRangeGridList = new List<GridPosition>();
 
-        List<Vector2Int> directionVectors = GetDirectionVector(direction);
+        List<Vector2Int> directionVectors = GetDirectionVector(direction, basePatternArray);
 
         foreach (Vector2Int directionVector in directionVectors) {
             // 패턴을 적용하여 각 그리드 위치에 대한 계산 수행
@@ -68,69 +68,6 @@ public class DealerNeco_2 : DealerTower {
         StartCoroutine(CoCheckAttackRange());
     }
 
-    private List<Vector2Int> ConvertPatternToList(int[,] patternArray) {
-        List<Vector2Int> patternList = new List<Vector2Int>();
-
-        int rows = patternArray.GetLength(0);
-        int cols = patternArray.GetLength(1);
-
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-                if (patternArray[y, x] == 1) {
-                    patternList.Add(new Vector2Int(x - cols / 2, y - rows / 2)); // 중앙 정렬
-                }
-            }
-        }
-
-        return patternList;
-    }
-
-    private List<Vector2Int> GetDirectionVector(AttackDirection direction) {
-
-
-        List<Vector2Int> pattern = ConvertPatternToList(basePatternArray);
-
-        switch (direction) {
-            case AttackDirection.Right:
-                return pattern;
-
-            case AttackDirection.Left:
-                return MirrorPattern(pattern); // 좌우 반전으로 Left 방향 변환
-
-            case AttackDirection.Up:
-                return RotatePatternUp(pattern); // 90도 회전으로 Up 방향 변환
-
-            case AttackDirection.Down:
-                return RotatePatternDown(pattern); // 90도 회전으로 Down 방향 변환
-
-            default:
-                return pattern;
-        }
-    }
-
-    private List<Vector2Int> MirrorPattern(List<Vector2Int> pattern) {
-        List<Vector2Int> mirroredPattern = new List<Vector2Int>();
-        foreach (Vector2Int vector in pattern) {
-            mirroredPattern.Add(new Vector2Int(-vector.x, vector.y));
-        }
-        return mirroredPattern;
-    }
-
-    private List<Vector2Int> RotatePatternDown(List<Vector2Int> pattern) {
-        List<Vector2Int> rotatedPattern = new List<Vector2Int>();
-        foreach (Vector2Int vector in pattern) {
-            rotatedPattern.Add(new Vector2Int(vector.y, -vector.x));
-        }
-        return rotatedPattern;
-    }
-
-    private List<Vector2Int> RotatePatternUp(List<Vector2Int> pattern) {
-        List<Vector2Int> rotatedPattern = new List<Vector2Int>();
-        foreach (Vector2Int vector in pattern) {
-            rotatedPattern.Add(new Vector2Int(-vector.y, vector.x));
-        }
-        return rotatedPattern;
-    }
 
     private void FilterInvalidGridPositions() {
         atkRangeGridList.RemoveAll(gridPos =>

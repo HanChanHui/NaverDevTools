@@ -15,7 +15,6 @@ public class CardManager : Singleton<CardManager>
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private DeckData playersDeck;
     [SerializeField] private LevelGrid levelGrid; 
-    //public MeshRenderer forbiddenAreaRenderer;
 
     public UnityAction<CardData, Vector3, List<GridPosition>, int> OnCardUsed;
 
@@ -27,6 +26,8 @@ public class CardManager : Singleton<CardManager>
     [SerializeField] private UICard[] cards;
     private bool cardIsActive = false;
     private bool IsPlaceable = false;
+    private float clickDurationThreshold = 0.2f;
+    private float clickTime = 0f;
     private GameObject previewHolder;
     private GameObject newPlaceable;
     private PlaceableTowerData dataToSpawn;
@@ -101,7 +102,6 @@ public class CardManager : Singleton<CardManager>
     private void CardTapped(int cardId) 
     {
         cards[cardId].GetComponent<RectTransform>().SetAsLastSibling();
-        //forbiddenAreaRenderer.enabled = true;
     }
 
     // 카드가 드래그 될 때 호출
@@ -189,8 +189,6 @@ public class CardManager : Singleton<CardManager>
                                                                     0.2f).SetEase(Ease.OutQuad);
             cards[cardId].ChangeActiveState(false);
         }
-
-        //forbiddenAreaRenderer.enabled = false;
     }
 
     private void HandleMouseHoldAction(PlaceableTowerData towerData, Vector3 position)

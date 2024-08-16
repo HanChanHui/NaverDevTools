@@ -88,8 +88,15 @@ public class TankerTower : Tower
             healthBar.Show();
             healthBar.UpdateHealth(health, maxHealth);
         }
+    }
 
-        //StartCoroutine(FlashRed());
+    public override void SetHealth(int heal) {
+        base.SetHealth(heal);
+        if(healthBar != null)
+        {
+            healthBar.Show();
+            healthBar.UpdateHealth(health, maxHealth);
+        }
     }
 
     private void OnDisable() {

@@ -21,10 +21,10 @@ MonoBehaviour:
   towerHP: 200
   towerDefence: 0
   towerAttack: 30
-  towerAttackSpeed: 1
-  attackRange: 1
-  towerCost: 3
-  towerRecoveryCost: 3
-  towerRecoveryCostIncrease: 5
+  towerAttackSpeed: 5
+  attackRange: 3
+  towerCost: 6
+  towerRecoveryCost: 6
+  towerRecoveryCostIncrease: 6
   width: 1
   height: 1
