@@ -14,17 +14,20 @@ public class UICard : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDo
     [HideInInspector] public int cardId;
     [HideInInspector] public CardData cardData;
 
-    public Image portraitImage; //Inspector-set reference
+    public Image portraitImage;
     public Image towerPropertyImage;
     public TextMeshProUGUI towerCostText;
     private CanvasGroup canvasGroup;
+
+    private bool isDragging = false;
+    private Vector2 initialPointerPosition;
+    private const float dragThreshold  = 1f;
 
     private void Awake() 
     {
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    //called by CardManager, it feeds CardData so this card can display the placeable's portrait
     public void InitialiseWithData(CardData cData) 
     {
         cardData = cData;
@@ -35,6 +38,9 @@ public class UICard : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDo
 
     public void OnPointerDown(PointerEventData pointerEvent) 
     {
+        isDragging = false;
+        initialPointerPosition = pointerEvent.position;
+
         if (OnTapDownAction != null)
         {
             OnTapDownAction(cardId);
@@ -43,9 +49,16 @@ public class UICard : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDo
 
     public void OnDrag(PointerEventData pointerEvent)
      {
-        if (OnDragAction != null)
+        float distance = Vector2.Distance(pointerEvent.position, initialPointerPosition);
+
+        if (distance > dragThreshold)
         {
-            OnDragAction(cardId, pointerEvent.delta);
+            isDragging = true;
+
+            if (OnDragAction != null)
+            {
+                OnDragAction(cardId, pointerEvent.delta);
+            }
         }
     }
 
@@ -53,7 +66,19 @@ public class UICard : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDo
     {
         if (OnTapReleaseAction != null)
         {
-            OnTapReleaseAction(cardId);
+            // 클릭과 드래그 구분 로직
+            if (isDragging)
+            {
+                // 드래그 후 놓기로 처리
+                Debug.Log("Drag click detected");
+                OnTapReleaseAction(cardId);
+            }
+            else
+            {
+                // 단일 클릭으로 처리
+                Debug.Log("Single click detected");
+                UIManager.Instance.ShowTowerInfoUI();
+            }
         }
     }
 

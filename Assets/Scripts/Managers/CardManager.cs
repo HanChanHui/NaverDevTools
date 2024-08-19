@@ -26,8 +26,6 @@ public class CardManager : Singleton<CardManager>
     [SerializeField] private UICard[] cards;
     private bool cardIsActive = false;
     private bool IsPlaceable = false;
-    private float clickDurationThreshold = 0.2f;
-    private float clickTime = 0f;
     private GameObject previewHolder;
     private GameObject newPlaceable;
     private PlaceableTowerData dataToSpawn;
