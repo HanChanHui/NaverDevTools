@@ -6,12 +6,14 @@ using UnityEngine;
 public class GridSystemVisual : MonoBehaviour {
     public static GridSystemVisual Instance { get; private set; }
 
-    [SerializeField] private LevelGrid levelGrid;
     [SerializeField] private Transform gridSystemVisualFloorPrefab;
     [SerializeField] private Transform gridSystemVisualBlockPrefab;
     public Transform GridSystemVisualFloorPrefab { get {return gridSystemVisualFloorPrefab; } }
     public Transform GridSystemVisualBlockPrefab { get {return gridSystemVisualBlockPrefab; } }
     [SerializeField] private List<GridVisualTypeMaterial> gridVisualTypeMaterialList;
+
+    private int width;
+    private int height;
     
     [Serializable]
     public struct GridVisualTypeMaterial {
@@ -30,39 +32,26 @@ public class GridSystemVisual : MonoBehaviour {
             return;
         }
         Instance = this;
-
-        if (levelGrid == null) 
-        {
-            levelGrid = GameObject.Find("LevelGrid").GetComponent<LevelGrid>();
-
-            if (levelGrid == null) {
-                Debug.LogError("LevelGrid 오브젝트를 찾을 수 없습니다. LevelGrid를 할당해주세요.");
-            }
-        }
     }
 
-    private void Start() 
+    public void Init(int width, int height) 
     {
+        this.width = width;
+        this.height = height;
 
         // 1층 그리드 시각화 초기화
-        gridSystemVisualOneLayerArray = new GridSystemVisualSingle[
-            levelGrid.GetWidth(),
-            levelGrid.GetHeight()
-        ];
+        gridSystemVisualOneLayerArray = new GridSystemVisualSingle[width, height];
         // 2층 그리드 시각화 초기화
-        gridSystemVisualTwoLayerArray = new GridSystemVisualSingle[
-            levelGrid.GetWidth(),
-            levelGrid.GetHeight()
-        ];
+        gridSystemVisualTwoLayerArray = new GridSystemVisualSingle[width, height];
 
-        for (int x = 0; x < levelGrid.GetWidth(); x++) 
+        for (int x = 0; x < width; x++) 
         {
-            for (int y = 0; y < levelGrid.GetHeight(); y++) 
+            for (int y = 0; y < height; y++) 
             {
                 GridPosition gridPosition = new GridPosition(x, y);
 
 
-                if (levelGrid.HasAnyBlockTypeOnGridPosition(gridPosition))
+                if (LevelGrid.Instance.HasAnyBlockTypeOnGridPosition(gridPosition))
                 {
                     TwoLayerGridSystemVisualSelect(gridSystemVisualBlockPrefab, gridPosition, x, y);
                 }
@@ -73,7 +62,7 @@ public class GridSystemVisual : MonoBehaviour {
 
     private void GridSystemVisualSelect(Transform prefab, GridPosition gridPosition, int x, int y)
     {
-        Vector3 worldPosition = levelGrid.GetWorldPosition(gridPosition);
+        Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         Transform gridSystemVisualOneLayerTransform = Instantiate(prefab, worldPosition, Quaternion.identity);
         gridSystemVisualOneLayerTransform.transform.parent = transform;
         gridSystemVisualOneLayerArray[x, y] = gridSystemVisualOneLayerTransform.GetComponent<GridSystemVisualSingle>();
@@ -82,7 +71,7 @@ public class GridSystemVisual : MonoBehaviour {
     private void TwoLayerGridSystemVisualSelect(Transform prefab, GridPosition gridPosition, int x, int y)
     {
         gridPosition.z = 2;
-        Vector3 worldPosition = levelGrid.GetWorldPosition(gridPosition);
+        Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         worldPosition.y += -0.22f;
         Transform gridSystemVisualTwoLayerTransform = Instantiate(prefab, worldPosition, Quaternion.identity);
         gridSystemVisualTwoLayerTransform.transform.parent = transform;
@@ -91,9 +80,9 @@ public class GridSystemVisual : MonoBehaviour {
 
     public void HideAllGridPosition() 
     {
-        for (int x = 0; x < levelGrid.GetWidth(); x++) 
+        for (int x = 0; x < width; x++) 
         {
-            for (int y = 0; y < levelGrid.GetHeight(); y++) 
+            for (int y = 0; y < height; y++) 
             {
                 gridSystemVisualOneLayerArray[x, y].Hide();
                 if(gridSystemVisualTwoLayerArray[x, y] != null)
@@ -106,9 +95,9 @@ public class GridSystemVisual : MonoBehaviour {
 
     public void ShowAllGridPosition() 
     {
-        for (int x = 0; x < levelGrid.GetWidth(); x++) 
+        for (int x = 0; x < width; x++) 
         {
-            for (int y = 0; y < levelGrid.GetHeight(); y++) 
+            for (int y = 0; y < height; y++) 
             {
                 gridSystemVisualOneLayerArray[x, y].Show(GetGridVisualTypeMaterial(GridVisualType.White));
                 if(gridSystemVisualTwoLayerArray[x, y] != null)
@@ -122,9 +111,9 @@ public class GridSystemVisual : MonoBehaviour {
     private void ShowGridPositionOneLayerRange(GridVisualType gridVisualType)
     {
         List<GridPosition> gridPositionList = new List<GridPosition>();
-        for (int x = 0; x < levelGrid.GetWidth(); x++)
+        for (int x = 0; x < width; x++)
         {
-            for (int z = 0; z < levelGrid.GetHeight(); z++)
+            for (int z = 0; z < height; z++)
             {
                 GridPosition testGridPosition = new GridPosition(x, z);
 
@@ -149,9 +138,9 @@ public class GridSystemVisual : MonoBehaviour {
     {
         List<GridPosition> gridPositionList = new List<GridPosition>();
 
-        for (int x = 0; x < levelGrid.GetWidth(); x++)
+        for (int x = 0; x < width; x++)
         {
-            for (int z = 0; z < levelGrid.GetHeight(); z++)
+            for (int z = 0; z < height; z++)
             {
                 GridPosition testGridPosition = new GridPosition(x, z);
 
@@ -222,9 +211,9 @@ public class GridSystemVisual : MonoBehaviour {
 
     public void DestroyGridPositionList() 
     {
-        for (int x = 0; x < levelGrid.GetWidth(); x++) 
+        for (int x = 0; x < width; x++) 
         {
-            for (int y = 0; y < levelGrid.GetHeight(); y++) 
+            for (int y = 0; y < height; y++) 
             {
                 Destroy(gridSystemVisualOneLayerArray[x, y].gameObject);
                 if(gridSystemVisualTwoLayerArray[x, y] != null)

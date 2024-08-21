@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7990153572837524442}
   - component: {fileID: 5189252135423596860}
   m_Layer: 12
-  m_Name: block_wood
+  m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,4 +144,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
-  blockType: 0
+  blockType: 1

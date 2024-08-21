@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BackgroundScaler : MonoBehaviour
@@ -14,5 +15,7 @@ public class BackgroundScaler : MonoBehaviour
         float worldScreenWidth = worldScreenHeight / Screen.height * Screen.width;
 
         transform.localScale = new Vector3(worldScreenWidth / width, worldScreenHeight / height, 1);
+
+        gameObject.AddComponent<BoxCollider2D>();
     }
 }

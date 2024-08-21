@@ -1,5 +1,4 @@
 using UnityEngine;
-using Pathfinding;
 
 public class Spawner : MonoBehaviour {
     [SerializeField] private GameObject enemy;
