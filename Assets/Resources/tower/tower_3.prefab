@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4501491416588237551}
   - component: {fileID: 6245045972962530028}
   - component: {fileID: 5338905933539610194}
+  - component: {fileID: 5607670781672501898}
   m_Layer: 11
   m_Name: tower_3
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2738529185662124643}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -92,10 +93,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.053479552, y: -0.34783423}
+  m_Offset: {x: 0.053479552, y: -0.12486935}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -106,7 +107,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.0105894, y: 1.6336796}
+  m_Size: {x: 2.0105894, y: 2.0796094}
   m_EdgeRadius: 0
 --- !u!114 &5338905933539610194
 MonoBehaviour:
@@ -120,6 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36d9ffa8feecf04594df8f8edbdf165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite: {fileID: 0}
+  defence: 0
   maxDistance: 1
   attackDamage: 20
   attackSpeed: 3
@@ -127,6 +130,20 @@ MonoBehaviour:
   healthBar: {fileID: 8701763534915965151}
   effectSpawnDistance: 1
   joystickController: {fileID: 0}
+--- !u!114 &5607670781672501898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2738529185662124643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e27a93e13fa76d41af8efb5e48672c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: 5ce16152b9e571e49a7c00e64acb5061, type: 3}
+  isActive: 0
 --- !u!1 &5768827657704837899
 GameObject:
   m_ObjectHideFlags: 0

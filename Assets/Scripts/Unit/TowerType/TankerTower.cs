@@ -8,8 +8,9 @@ public class TankerTower : Tower
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] protected HealthLabel healthBar;
     [SerializeField] private float effectSpawnDistance = 1f;
-    protected override void Start() {
-        base.Start();
+    
+    protected override void MyInit() {
+        base.MyInit();
 
         if(healthBar != null)
         {

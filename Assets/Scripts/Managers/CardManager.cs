@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
-using Unity.VisualScripting;
-
 
 
 public class CardManager : Singleton<CardManager> 
 {
  
-    [SerializeField] private LayerMask playingFieldMask;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private DeckData playersDeck;
+    [SerializeField] private InputManager input; 
     [SerializeField] private LevelGrid levelGrid; 
+    [SerializeField] private GridSystemVisual gridSV;
+    [SerializeField] private GameManager gameManager;
 
     public UnityAction<CardData, Vector3, List<GridPosition>, int> OnCardUsed;
 
@@ -28,7 +28,7 @@ public class CardManager : Singleton<CardManager>
     private bool IsPlaceable = false;
     private GameObject previewHolder;
     private GameObject newPlaceable;
-    private PlaceableTowerData dataToSpawn;
+    [SerializeField] private PlaceableTowerData dataToSpawn;
     private List<GridPosition> towerGridPositionList = new List<GridPosition>();
     private Vector3 resultTowerGridPos = new Vector3();
 
@@ -108,7 +108,7 @@ public class CardManager : Singleton<CardManager>
         cards[cardId].transform.Translate(dragAmount);
 
         dataToSpawn = cards[cardId].cardData.towerData;
-        if (InputManager.Instance.GetPosition(out Vector3 position)) 
+        if (input.GetPosition(out Vector3 position)) 
         {
             if (!cardIsActive) 
             {
@@ -121,8 +121,8 @@ public class CardManager : Singleton<CardManager>
                 towerGridPositionList = new List<GridPosition>();
 
                 // 슬로우 시간
-                GameManager.Instance.Pause(0.2f);
-                GridSystemVisual.Instance.UpdateGridVisual(dataToSpawn.towerType, true);
+                gameManager.Pause(0f);
+                gridSV.UpdateGridVisual(dataToSpawn.towerType, true);
 
                 // 미리보기 PlaceableTower를 생성하고 cardPreview에 부모로 설정
                 newPlaceable = GameObject.Instantiate<GameObject>(dataToSpawn.towerIconPrefab,
@@ -158,8 +158,8 @@ public class CardManager : Singleton<CardManager>
         // 플레이 필드에 카드가 있는지 확인하기 위해 레이캐스트를 수행
        
 
-        if (InputManager.Instance.GetPosition(out Vector3 position) && IsPlaceable 
-            && (int)UIManager.Instance.NatureAmount >= dataToSpawn.towerCost) 
+        if (input.GetPosition(out Vector3 position) && IsPlaceable 
+            && (int)gameManager.NatureAmount >= dataToSpawn.towerCost) 
         {
             cardIsActive = false;
             if (OnCardUsed != null)
@@ -169,7 +169,7 @@ public class CardManager : Singleton<CardManager>
             }
             
             UIManager.Instance.ShowDirectionJoystickUI(resultTowerGridPos);
-            GridSystemVisual.Instance.UpdateGridVisual(dataToSpawn.towerType, false);
+            gridSV.UpdateGridVisual(dataToSpawn.towerType, false);
 
             ClearPreviewObjects();
             Destroy(cards[cardId].gameObject); // 카드를 제거
@@ -179,8 +179,8 @@ public class CardManager : Singleton<CardManager>
         } 
         else 
         {
-            GameManager.Instance.Resume();
-            GridSystemVisual.Instance.UpdateGridVisual(dataToSpawn.towerType, false);
+            gameManager.Resume();
+            gridSV.UpdateGridVisual(dataToSpawn.towerType, false);
             cardIsActive = false;
             ClearPreviewObjects();
             cards[cardId].GetComponent<RectTransform>().DOAnchorPos(new Vector2(-310f + (200f * cardId), 0f),
@@ -257,28 +257,6 @@ public class CardManager : Singleton<CardManager>
         }
 
         return false;
-    }
-
-    private void TryGetTowerGridVisual(PlaceableTowerData towerData, bool isActive)
-    {
-        TowerType type = towerData.towerType;
-        switch(type)
-        {
-            case TowerType.Dealer:
-                if(isActive)
-                {
-
-                }
-                else
-                {
-
-                }
-                break;
-            case TowerType.Tanker:
-                
-                break;
-        }
-
     }
 
     

@@ -9,9 +9,9 @@ public class HealerTower : Tower
     private bool isHealing = false;
  
 
-    protected override void Start()
+    protected override void MyInit()
     {
-        base.Start();
+        base.MyInit();
     }
 
     protected override void OnDestroy()

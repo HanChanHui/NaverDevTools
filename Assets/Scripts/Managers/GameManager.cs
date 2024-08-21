@@ -7,11 +7,16 @@ public class GameManager : Singleton<GameManager>
 {
 
     public event Action<int> OnEnemyDeath;
+    public event Action<float, float> OnUseNature;
+    public event Action<float, float> OnFullNature;
 
     private CardManager cardManager;
     private UIManager uiManager;
+    private TowerTouchManager towerInfoManager;
 
-    [SerializeField] private int natureAmount;
+    [Header("Parameter")]
+    private float natureAmount;
+    [SerializeField] private float natureAmountMax;
     [SerializeField] private int enemyWave;
     [SerializeField] private int enemySpawnCount = 0;
     [SerializeField] private int enemyMaxSpawnCount = 0;
@@ -27,6 +32,7 @@ public class GameManager : Singleton<GameManager>
     private bool timePaused = false;
     private bool isTimeTwoSpeed = false;
 
+    public float NatureAmount { get { return natureAmount; } }
     public int EnemySpawnCount {get {return enemySpawnCount;} set{enemySpawnCount = value;}}
     public int EnemyMaxSpawnCount {get{return enemyMaxSpawnCount;} set{enemyMaxSpawnCount = value;}}
     public int EnemyMaxDeathCount {get{return enemyMaxDeathCount;} set{enemyMaxDeathCount = value;}}
@@ -44,13 +50,15 @@ public class GameManager : Singleton<GameManager>
     {
         uiManager = UIManager.Instance;
         cardManager = CardManager.Instance;
+        towerInfoManager = TowerTouchManager.Instance;
 
         cardManager.OnCardUsed += UseCard;
+        towerInfoManager.OnTowerSell += SellTower;
     }
 
     private void Start() 
     {
-        uiManager.Init(natureAmount);
+        NatureBarInit(natureAmountMax);
         cardManager.LoadDeck();
     }
  
@@ -104,7 +112,9 @@ public class GameManager : Singleton<GameManager>
         PlaceableTowerData pDataRef = cardData.towerData;
         GameObject prefabToSpawn = pDataRef.towerPrefab;
         Tower newPlaceableGO = Instantiate(prefabToSpawn, position, Quaternion.identity).GetComponent<Tower>();
-        uiManager.UseNature(towerCost);
+        UseNature(towerCost);
+        newPlaceableGO.OnClickAction += towerInfoManager.PromoteTowerFromTowerUI;
+
         foreach (GridPosition gridPosition in towerGridPositionList) 
         {
             newPlaceableGO.GridPositionList.Add(gridPosition);
@@ -118,10 +128,17 @@ public class GameManager : Singleton<GameManager>
         SetupPlaceable(newPlaceableGO, pDataRef);
     }
 
+    public void SellTower(Tower tower)
+    {
+        Debug.Log("tower 삭제");
+        FullNature(tower.TowerSellCost);
+        Destroy(tower.gameObject);
+    }
 
-    private void SetupPlaceable(Tower tower, PlaceableTowerData pDataRef) {
-        //Add the appropriate script
-        tower.Init(pDataRef.attackRange, pDataRef.towerAttack, pDataRef.towerAttackSpeed, pDataRef.towerHP, pDataRef.towerDefence);
+
+    private void SetupPlaceable(Tower tower, PlaceableTowerData pDataRef) 
+    {
+        tower.Init(pDataRef.attackRange, pDataRef.towerAttack, pDataRef.towerAttackSpeed, pDataRef.towerHP, pDataRef.towerDefence, pDataRef.towerRecoveryCost);
 
         AddPlaceableTowerList(tower);
     }
@@ -182,6 +199,39 @@ public class GameManager : Singleton<GameManager>
                 OnEndGameOver();
             }
         }
+    }
+
+    private void NatureBarInit(float amount)
+    {
+        //natureAmountMax = amount;
+        natureAmount = amount;
+    }
+
+    public void UseNature(int amount)
+    {
+        natureAmount -= amount;
+        OnUseNature?.Invoke(GetNatureNormalized(), natureAmount);
+
+        if(natureAmount < 0)
+        {
+            natureAmount = 0;
+        }
+    }
+
+    public void FullNature(float amount)
+    {
+        natureAmount += amount;
+        OnFullNature?.Invoke(GetNatureNormalized(), natureAmount);
+
+        if(natureAmount > natureAmountMax)
+        {
+            natureAmount = natureAmountMax;
+        }
+    }
+
+    public float GetNatureNormalized()
+    {
+        return (float)natureAmount / natureAmountMax;
     }
 
     private void DestroyObject()

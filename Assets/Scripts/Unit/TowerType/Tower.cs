@@ -2,10 +2,13 @@ using Consts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Tower : LivingEntity
 {
-    protected SpriteRenderer sprite;
+    public UnityAction<Tower> OnClickAction;
+
+    public SpriteRenderer sprite;
     private Color originalColor;
 
     protected List<GridPosition> gridPositionList = new List<GridPosition>();
@@ -15,10 +18,16 @@ public class Tower : LivingEntity
     [SerializeField] protected int maxDistance;
     [SerializeField] protected float attackDamage;
     [SerializeField] protected float attackSpeed;
+    [SerializeField] protected int towerSellCost;
+    protected bool isClickUI = false;
+    [SerializeField] private bool isTwoType = false; // 임시로 1층과 2층 구분
 
 
     public List<GridPosition> GridPositionList { get { return gridPositionList; } set { gridPositionList = value; } }
     public List<BaseEnemy> EnemiesInRange { get { return enemiesInRange; } }
+    public int TowerSellCost { get {return towerSellCost; } }
+    public bool IsTwoType { get {return isTwoType; } }
+
 
 
     protected virtual void Awake()
@@ -30,16 +39,19 @@ public class Tower : LivingEntity
         }
     }
 
-    public void Init(int maxDistance, float attackDamage, float attackSpeed, int health, float defence)
+    public void Init(int maxDistance, float attackDamage, float attackSpeed, int health, float defence, int towerSellCost)
     {
         this.maxDistance = maxDistance;
         this.attackDamage = attackDamage;
         this.attackSpeed = attackSpeed;
         this.health = health;
         this.defence = defence;
+        this.towerSellCost = towerSellCost;
+
+        MyInit();
     }
 
-    protected virtual void Start()
+    protected virtual void MyInit()
     {
         if (gridPositionList != null)
         {
@@ -60,7 +72,6 @@ public class Tower : LivingEntity
 
         BaseEnemy.OnEnemyDestroyed += OnEnemyDestroyed;
 
-        //SetHealth(100);
         StartCoroutine(CoCheckDistance());
     }
 
@@ -73,19 +84,12 @@ public class Tower : LivingEntity
 
     }
 
-    protected bool IsWithinRange(GridPosition gridPosition)
+    public void OnCreateComplete() 
     {
-        foreach (GridPosition towerPosition in gridPositionList)
+        if (OnClickAction != null)
         {
-            int dx = Mathf.Abs(gridPosition.x - towerPosition.x);
-            int dy = Mathf.Abs(gridPosition.y - towerPosition.y);
-            int distance = Mathf.Max(dx, dy);
-            if (distance <= maxDistance)
-            {
-                return true;
-            }
+            OnClickAction(this);
         }
-        return false;
     }
 
     protected virtual IEnumerator CoCheckDistance()
@@ -110,9 +114,8 @@ public class Tower : LivingEntity
         return patternList;
     }
 
-    protected List<Vector2Int> GetDirectionVector(AttackDirection direction, int[,] patternArray) {
-
-
+    protected List<Vector2Int> GetDirectionVector(AttackDirection direction, int[,] patternArray) 
+    {
         List<Vector2Int> pattern = ConvertPatternToList(patternArray);
 
         switch (direction) {
@@ -165,10 +168,6 @@ public class Tower : LivingEntity
 
         if (health <= 0)
         {
-           foreach(GridPosition gridPosition in gridPositionList)
-           {
-                LevelGrid.Instance.RemoveTowerAtGridPosition(gridPosition, this);
-           }
            GameManager.Instance.RemovePlaceableTowerList(this);
            Destroy(gameObject);
         }
@@ -193,5 +192,9 @@ public class Tower : LivingEntity
     protected virtual void OnDestroy()
     {
         BaseEnemy.OnEnemyDestroyed -= OnEnemyDestroyed;
+
+        foreach (GridPosition gridPosition in gridPositionList) {
+            LevelGrid.Instance.RemoveTowerAtGridPosition(gridPosition, this);
+        }
     }
 }

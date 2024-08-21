@@ -8,9 +8,9 @@ public class DealerTower : Tower
     [SerializeField] private Transform shooterPos;
     private bool isBulletActive = false;
 
-    protected override void Start()
+    protected override void MyInit()
     {
-        base.Start();
+        base.MyInit();
         Bullet.OnBulletDestroyed += OnBulletDestroyed;
     }
 

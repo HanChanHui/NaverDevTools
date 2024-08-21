@@ -17,8 +17,9 @@ public class TankerNeco_1 : TankerTower
         { 0, 0, 0 },
     };
 
-    protected override void Start() {
-        base.Start();
+    protected override void MyInit() 
+    {
+        base.MyInit();
 
         gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
         joystickController = UIManager.Instance.GetJoystickPanel().GetComponentInChildren<JoystickController>();
@@ -40,6 +41,7 @@ public class TankerNeco_1 : TankerTower
         UIManager.Instance.HideDirectionJoystickUI();
         joystickController.UnregisterDirectionSelectedHandler(OnAttackDirectionSelected);
         GenerateAttackPattern(atkDirection);
+        OnCreateComplete();
     }
 
     private IEnumerator CoCheckAttackRange() {
@@ -62,23 +64,6 @@ public class TankerNeco_1 : TankerTower
 
         FilterInvalidGridPositions();
         StartCoroutine(CoCheckAttackRange());
-    }
-
-    private List<Vector2Int> ConvertPatternToList(int[,] patternArray) {
-        List<Vector2Int> patternList = new List<Vector2Int>();
-
-        int rows = patternArray.GetLength(0);
-        int cols = patternArray.GetLength(1);
-
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-                if (patternArray[y, x] == 1) {
-                    patternList.Add(new Vector2Int(x - cols / 2, y - rows / 2)); // 중앙 정렬
-                }
-            }
-        }
-
-        return patternList;
     }
 
     private void FilterInvalidGridPositions() {

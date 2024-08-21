@@ -44,8 +44,8 @@ public class JoystickController : MonoBehaviour, IPointerDownHandler, IDragHandl
             eventData.pressEventCamera,
             out position);
 
-        position.x = (position.x / joystickBackground.rectTransform.sizeDelta.x);
-        position.y = (position.y / joystickBackground.rectTransform.sizeDelta.y);
+        position.x = position.x / joystickBackground.rectTransform.sizeDelta.x;
+        position.y = position.y / joystickBackground.rectTransform.sizeDelta.y;
 
         inputVector = new Vector2(position.x * 2, position.y * 2);
         inputVector = (inputVector.magnitude > 1.0f) ? inputVector.normalized : inputVector;
@@ -88,16 +88,6 @@ public class JoystickController : MonoBehaviour, IPointerDownHandler, IDragHandl
     {
         inputVector = Vector2.zero;
         joystickHandle.rectTransform.anchoredPosition = Vector2.zero;
-    }
-
-    public float Horizontal()
-    {
-        return inputVector.x;
-    }
-
-    public float Vertical()
-    {
-        return inputVector.y;
     }
 
 }

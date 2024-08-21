@@ -18,8 +18,9 @@ public class HealerNeco_2 : HealerTower
        
     };
 
-    protected override void Start() {
-        base.Start();
+    protected override void MyInit() 
+    {
+        base.MyInit();
 
         gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
         joystickController = UIManager.Instance.GetJoystickPanel().GetComponentInChildren<JoystickController>();
@@ -42,6 +43,7 @@ public class HealerNeco_2 : HealerTower
         UIManager.Instance.HideDirectionJoystickUI();
         joystickController.UnregisterDirectionSelectedHandler(OnAttackDirectionSelected);
         GenerateAttackPattern(atkDirection);
+        OnCreateComplete();
     }
 
     private IEnumerator CoCheckAttackRange() {

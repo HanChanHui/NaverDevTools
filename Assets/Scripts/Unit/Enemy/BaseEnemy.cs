@@ -174,7 +174,7 @@ public abstract class BaseEnemy : LivingEntity
 
         foreach (var hit in hits) {
             Tower tower = hit.GetComponent<Tower>();
-            if (tower != null) {
+            if (tower != null && !tower.IsTwoType) {
                 newTowerList.Add(tower); // 새로운 리스트에 타워 추가
 
                 if (IsTowerInMovingDirection(tower.transform.position)) {

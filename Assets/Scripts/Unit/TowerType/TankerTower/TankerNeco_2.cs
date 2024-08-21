@@ -17,8 +17,9 @@ public class TankerNeco_2 : TankerTower
         { 0, 0, 1 },
     };
 
-    protected override void Start() {
-        base.Start();
+    protected override void MyInit() 
+    {
+        base.MyInit();
 
         gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
         joystickController = UIManager.Instance.GetJoystickPanel().GetComponentInChildren<JoystickController>();
@@ -40,6 +41,7 @@ public class TankerNeco_2 : TankerTower
         UIManager.Instance.HideDirectionJoystickUI();
         joystickController.UnregisterDirectionSelectedHandler(OnAttackDirectionSelected);
         GenerateAttackPattern(atkDirection);
+        OnCreateComplete();
     }
 
     private IEnumerator CoCheckAttackRange() {

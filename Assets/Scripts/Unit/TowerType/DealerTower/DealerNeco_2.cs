@@ -20,8 +20,9 @@ public class DealerNeco_2 : DealerTower {
         { 0, 0, 0, 0, 0, 0, 0 }
     };
 
-    protected override void Start() {
-        base.Start();
+    protected override void MyInit() 
+    {
+        base.MyInit();
 
         gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
         joystickController = UIManager.Instance.GetJoystickPanel().GetComponentInChildren<JoystickController>();
@@ -44,6 +45,7 @@ public class DealerNeco_2 : DealerTower {
         UIManager.Instance.HideDirectionJoystickUI();
         joystickController.UnregisterDirectionSelectedHandler(OnAttackDirectionSelected);
         GenerateAttackPattern(atkDirection);
+        OnCreateComplete();
     }
 
     private IEnumerator CoCheckAttackRange() {

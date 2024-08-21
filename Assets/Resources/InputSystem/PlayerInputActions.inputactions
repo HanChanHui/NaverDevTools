@@ -6,7 +6,7 @@
             "id": "bde4d21c-4b3d-4778-a6c2-085a0a346be2",
             "actions": [
                 {
-                    "name": "MouseDown",
+                    "name": "ClickAction",
                     "type": "Button",
                     "id": "5fbd93f9-2956-481d-9306-50470d4c9bf1",
                     "expectedControlType": "Button",
@@ -15,7 +15,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MouseHold",
+                    "name": "DragAction",
                     "type": "Button",
                     "id": "d56c2648-b18e-4118-bd8b-a94c863e509e",
                     "expectedControlType": "Button",
@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MouseUp",
+                    "name": "ReleaseAction",
                     "type": "Button",
                     "id": "25331e1f-70f8-4f29-8a63-49d29851b1d1",
                     "expectedControlType": "Button",
@@ -40,8 +40,8 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "Press",
                     "processors": "",
-                    "groups": "Player",
-                    "action": "MouseDown",
+                    "groups": "",
+                    "action": "ClickAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -49,10 +49,10 @@
                     "name": "",
                     "id": "a15548d7-2707-4356-ba8d-468c549b4841",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseHold",
+                    "action": "DragAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -63,7 +63,7 @@
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseUp",
+                    "action": "ReleaseAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
