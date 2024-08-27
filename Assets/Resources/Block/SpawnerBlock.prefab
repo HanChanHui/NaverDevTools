@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 200919184759713673}
   - component: {fileID: 8607629669318243158}
   - component: {fileID: 8152004286665408703}
-  - component: {fileID: 8542041784646248762}
+  - component: {fileID: 5006385214784956666}
+  - component: {fileID: 639867778544128542}
   m_Layer: 12
   m_Name: SpawnerBlock
   m_TagString: Untagged
@@ -131,7 +132,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &8542041784646248762
+--- !u!114 &5006385214784956666
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,11 +141,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 3903411086658984349}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 881c3e7052e484541bc333a0fef63ca6, type: 3}
+  m_Script: {fileID: 11500000, guid: 86877a3fcdb6c9e4a855c3caf0fb49ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  enemyBoss: {fileID: 0}
-  enemyTarget: {fileID: 0}
-  coolTime: 1
-  spawnerEnabled: 0
+  target: {fileID: 0}
+--- !u!114 &639867778544128542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3903411086658984349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d36bb46882e5aef408ade5e616b18add, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

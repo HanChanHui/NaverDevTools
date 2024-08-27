@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd92ee31feb00e4c8a6d62bab71e620, type: 3}
+  m_Name: TankerTower_4
+  m_EditorClassIdentifier: 
+  towerType: 2
+  towerPrefab: {fileID: 2011171422113866404, guid: f431d8a2ba0f74e408f7fc0b0f5fee0e, type: 3}
+  towerIconPrefab: {fileID: 6004909079585562765, guid: 6950e29aa58215440beee0ba2e900f73, type: 3}
+  towerID: 0
+  towerName: TankerNeco_4
+  towerAttackType: 1
+  towerHP: 2100
+  towerDefence: 125
+  towerAttack: 130
+  towerAttackSpeed: 0.9
+  attackRange: 3
+  towerCost: 4
+  towerRecoveryCost: 2
+  towerRecoveryCostIncrease: 0
+  width: 1
+  height: 1

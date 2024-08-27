@@ -21,6 +21,27 @@ namespace HornSpirit {
             return itemList.ToArray();
         }
 
+        public T[] WaveParseJSON<T>(System.Func<string[], bool, T> getItemFunc, string sheet) {
+            string[] column = sheet.Split('\n');
+            List<T> itemList = new();
+            bool isEnd = false;
+            for (int i = 0; i < column.Length; i++) {
+                string[] row = column[i].Split('\t');
+                
+                if(i >= column.Length - 1)
+                {
+                    isEnd = true;
+                }
+                T item = getItemFunc(row, isEnd);
+
+                if (item != null && ((i != 0 && row[0] == "ID") || i >= column.Length - 1)) {
+                    itemList.Add(item);
+                }
+            }
+
+            return itemList.ToArray();
+        }
+
         public void SaveJSONFile<T>(T list, string fileName) {
             string jsonData = JsonUtility.ToJson(list, true);
             string jsonFilePath = Application.dataPath + $"/Resources/JSON/{fileName}.json";

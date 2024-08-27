@@ -1,5 +1,5 @@
+using Consts;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
@@ -13,6 +13,7 @@ namespace HornSpirit {
         string className = "HornSpirit.";
         string ADDRESS = "https://docs.google.com/spreadsheets/d/1cMw2QKu4trnohtA9YBA5pGgZPuZZhjlrNnFTVceR1iQ";
         string RANGE = "A:Z";
+        GoogleSheetType googleSheetType;
         int SHEET = 0;
 
         string spreadSheet;
@@ -29,6 +30,8 @@ namespace HornSpirit {
 
             ADDRESS = EditorGUILayout.TextField("ADDRESS", ADDRESS);
             RANGE = EditorGUILayout.TextField("RANGE", RANGE);
+            googleSheetType = (GoogleSheetType)EditorGUILayout.EnumPopup("SHEET", googleSheetType);
+            SheetSeting();
             SHEET = EditorGUILayout.IntField("SHEET", SHEET);
 
             if (GUILayout.Button("Create JSON File")) {
@@ -74,6 +77,40 @@ namespace HornSpirit {
                 spreadSheet = client.DownloadString(GetTSVAddress(ADDRESS, RANGE, SHEET));
             } catch (Exception e) {
                 Debug.LogWarning("Load Google Sheet Warning: " + e.Message);
+            }
+        }
+
+        void SheetSeting()
+        {
+            switch(googleSheetType)
+            {
+                case GoogleSheetType.TowerManager:
+                    SHEET = 1565654265;
+                    break;
+                case GoogleSheetType.AttackRange:
+                    SHEET = 440193799;
+                    break;
+                case GoogleSheetType.Tower:
+                    SHEET = 1379353875;
+                    break;
+                case GoogleSheetType.TowerValue:
+                    SHEET = 0;
+                    break;
+                case GoogleSheetType.TowerUpgradeValue:
+                    SHEET = 226990251;
+                    break;
+                case GoogleSheetType.Monster:
+                    SHEET = 851104077;
+                    break;
+                case GoogleSheetType.Level:
+                    SHEET = 1724709294;
+                    break;
+                case GoogleSheetType.Stage:
+                    SHEET = 63536653;
+                    break;
+                case GoogleSheetType.Equipment:
+                    SHEET = 1139643836;
+                    break;
             }
         }
     }

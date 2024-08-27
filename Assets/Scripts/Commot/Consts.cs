@@ -51,6 +51,7 @@ namespace Consts {
    }
 
    public enum AttackDirection {
+      None,
       Up,
       Down,
       Left,
@@ -60,6 +61,56 @@ namespace Consts {
    public enum StageType {
       Grass,
 
+   }
+
+   public enum SpawnState { 
+      Spawning, 
+      Waiting, 
+      Finish 
+   }
+
+   public enum SceneType
+   {
+      TitleScene,
+      BattleScene,
+   }
+
+   public enum AttackRangeType 
+   {
+      None,
+      Pattern1,
+      Pattern2,
+      Pattern3,
+      Pattern4,
+      Pattern5,
+      Pattern6,
+      Pattern7,
+      Pattern8,
+      Pattern9,
+      Pattern10,
+      Pattern11,
+      Pattern12,
+      Pattern13,
+      Pattern14,
+      Pattern15,
+      Pattern16,
+      Pattern17,
+      Pattern18,
+      Pattern19,
+      Pattern20,
+   }
+
+   public enum GoogleSheetType
+   {
+      TowerManager,
+      AttackRange,
+      Tower,
+      TowerValue,
+      TowerUpgradeValue,
+      Monster,
+      Level,
+      Stage,
+      Equipment,
    }
 }
 
