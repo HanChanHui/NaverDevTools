@@ -896,58 +896,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89594927}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD:Assets/Scenes/BattleScene.unity
 --- !u!1 &106635905
-=======
---- !u!1 &1963011177
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1963011179}
-  - component: {fileID: 1963011178}
-  m_Layer: 0
-  m_Name: PoolManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1963011178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1963011177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a41433dc48903384eb5168684d35ad80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemGroup:
-    m_keys: []
-    m_values: []
---- !u!4 &1963011179
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1963011177}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1964434272
->>>>>>> bc1868d72fa10d006c543e31570e5d07bc1db9bf:Assets/Scenes/Battle.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10696,13 +10645,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 4048194362733019121}
   - {fileID: 619394802}
-<<<<<<< HEAD:Assets/Scenes/BattleScene.unity
   - {fileID: 550720796}
   - {fileID: 874586531}
   - {fileID: 1904866547}
-=======
-  - {fileID: 1676792878}
-  - {fileID: 584410185}
-  - {fileID: 43031315}
-  - {fileID: 1963011179}
->>>>>>> bc1868d72fa10d006c543e31570e5d07bc1db9bf:Assets/Scenes/Battle.unity
