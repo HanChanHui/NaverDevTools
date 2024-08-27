@@ -2,28 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hover : MonoBehaviour
-{
-    
-    private SpriteRenderer spriteRenderer;
+namespace HornSpirit {
+    public class Hover : MonoBehaviour {
 
-    private void Start() 
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-    
-    private void Update() 
-    {
-        FollowMouse();
-    }
+        private SpriteRenderer spriteRenderer;
 
-    private void FollowMouse()
-    {
-        transform.position = InputManager.Instance.GetMouseWorldPosition();
-    }
+        private void Start() {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
 
-    public void Activate(Sprite sprite)
-    {
-        spriteRenderer.sprite = sprite;
+        private void Update() {
+            FollowMouse();
+        }
+
+        private void FollowMouse() {
+            transform.position = InputManager.Instance.GetMouseWorldPosition();
+        }
+
+        public void Activate(Sprite sprite) {
+            spriteRenderer.sprite = sprite;
+        }
     }
 }

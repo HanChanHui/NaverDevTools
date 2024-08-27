@@ -1,78 +1,84 @@
 using System.Collections;
 using System.Collections.Generic;
-using Pathfinding;
 using UnityEngine;
-using UnityEngine.Animations;
 
-public class MeleeEnemy : BaseEnemy
-{
-    
-    [SerializeField] private GameObject attackEffect;
-    [SerializeField] private float effectSpawnDistance = 1f; // 이펙트 생성 거리
-    [SerializeField] private float effectSpeed = 2f;
+namespace HornSpirit {
+    public class MeleeEnemy : BaseEnemy {
 
-    protected override IEnumerator AttackTarget(Tower targetTower)
-    {
-        while (targetTower != null)
-        {
-            ShootEffect(targetTower);
-            yield return new WaitForSeconds(attackInterval);
+        [SerializeField] private GameObject attackEffect;
+        [SerializeField] private float effectSpawnDistance = 1f; // 이펙트 생성 거리
+        [SerializeField] private float effectSpeed = 2f;
+
+        protected override IEnumerator AttackTarget(Tower targetTower) {
+            while (targetTower != null) {
+                ShootEffect(targetTower);
+                yield return new WaitForSeconds(attackInterval);
+            }
+
+            isAttackingTower = false;
+            attackCoroutine = StartCoroutine(CoCheckDistance());
+            SetNewTarget(originalTarget);
         }
 
-        isAttackingTower = false;
-        attackCoroutine = StartCoroutine(CoCheckDistance());
-        SetNewTarget(originalTarget);
-    }
+        protected override IEnumerator MovingAttackTarget(Tower targetTower) {
+            while (targetTower != null && isMoveAttacking) {
+                AiPath.canMove = false;
+                ShootEffect(targetTower);
+                yield return new WaitForSeconds(moveWaitTime);
+                AiPath.canMove = true;
+                yield return new WaitForSeconds(moveAttackSpeed);
+            }
 
-    protected override IEnumerator MovingAttackTarget(Tower targetTower) 
-    {
-        while (targetTower != null && isMoveAttacking)
-        {
-            AiPath.canMove = false;
-            ShootEffect(targetTower);
-            yield return new WaitForSeconds(moveWaitTime);
             AiPath.canMove = true;
-            yield return new WaitForSeconds(moveAttackSpeed);
         }
 
-        AiPath.canMove = true;
-    }
+        protected override void GridRangeFindAndCheckDirection() {
+            List<Tower> newTowerList = new List<Tower>();
+            targetTower = null; // 초기화
 
-    // private IEnumerator AttackRoutine(Tower targetTower)
-    // {
-    //     while (targetTower != null)
-    //     {
-    //         ShootEffect(targetTower);
-    //         yield return new WaitForSeconds(attackInterval);
-    //     }
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, maxDistance, LayerMask.GetMask("Tower"));
 
-    //     isAttackingTower = false;
-    //     isMoveAttacking = true;
-    //     checkDistanceCoroutine = StartCoroutine(CoCheckDistance());
-    // }
+            foreach (var hit in hits) {
+                Tower tower = hit.GetComponent<Tower>();
+                if (tower != null && !tower.IsTwoType) {
+                    newTowerList.Add(tower); // 새로운 리스트에 타워 추가
 
-    private void ShootEffect(Tower target)
-    {
-        Vector3 direction = target.transform.position - transform.position;
-        direction.Normalize();
+                    if (IsTowerInMovingDirection(tower.transform.position)) {
+                        targetTower = tower;
+                    }
+                }
+            }
 
-        // 타워 근처의 위치 계산
-        Vector3 spawnPosition = target.transform.position - direction * effectSpawnDistance;
+            DrawCircle(transform.position, maxDistance);
 
-        GameObject attackEffectInstance = Instantiate(attackEffect, spawnPosition, Quaternion.identity);
-       
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        attackEffectInstance.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            if (newTowerList.Count <= 0) {
+                isMoveAttacking = false;
+            }
 
-        Rigidbody2D rb = attackEffectInstance.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.velocity = direction * effectSpeed;
+            // 새로운 리스트로 기존 리스트 교체
+            towerList = newTowerList;
         }
 
-        if (attackEffectInstance != null)
-        {
-            target.TakeDamage(attackDamage);
+        private void ShootEffect(Tower target) {
+            Vector3 direction = target.transform.position - transform.position;
+            direction.Normalize();
+
+            // 타워 근처의 위치 계산
+            Vector3 spawnPosition = target.transform.position - direction * effectSpawnDistance;
+
+            GameObject attackEffectInstance = Instantiate(attackEffect, spawnPosition, Quaternion.identity);
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            attackEffectInstance.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+            Rigidbody2D rb = attackEffectInstance.GetComponent<Rigidbody2D>();
+            if (rb != null) {
+                rb.velocity = direction * effectSpeed;
+            }
+
+            if (attackEffectInstance != null) {
+                target.TakeDamage(attackDamage);
+            }
         }
     }
 }

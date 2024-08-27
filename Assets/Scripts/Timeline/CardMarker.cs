@@ -5,15 +5,15 @@ using UnityEngine.Playables;
 using System.ComponentModel;
 using System.Collections.Generic;
 
+namespace HornSpirit {
+    [Serializable, DisplayName("Card Marker")]
+    public class CardMarker : Marker, INotification {
+        public CardData card;
+        public Vector3 position;
+        public List<GridPosition> towerGridPosition;
+        public int towerCost;
 
-[Serializable, DisplayName("Card Marker")]
-public class CardMarker : Marker, INotification
-{
-    public CardData card;
-    public Vector3 position;
-    public List<GridPosition> towerGridPosition;
-    public int towerCost;
-    
 
-    public PropertyName id {get {return new PropertyName();}}
+        public PropertyName id { get { return new PropertyName(); } }
+    }
 }
